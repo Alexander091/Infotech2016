@@ -15,4 +15,8 @@ build-impl.xml
 genfiles.properties	
 project.properties	
 project.xml
+private.properties
+private.xml
+
+" ** / nbproject/ "
 
