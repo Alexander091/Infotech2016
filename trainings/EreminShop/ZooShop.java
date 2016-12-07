@@ -16,20 +16,16 @@ import java.util.List;
 public class ZooShop {
     private List<Animal> pets = new ArrayList<Animal>();
     
+    public Animal getPet(int index){
+        return pets.get(index);
+    }
+    
     public void AddPet(Animal pet){
         pets.add(pet);
     }
     
     public void RemovePet(int number){
         pets.remove(number);
-    }
-    
-    public void PrintAllPets(){
-        for (int i = 0; i < pets.size(); i++) {
-            System.out.println("#"+(i+1));
-            pets.get(i).PrintInfo();
-            System.out.println();
-        }
     }
 
     public List<Animal> getPets() {
