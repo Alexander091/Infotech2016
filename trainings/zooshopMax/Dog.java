@@ -1,41 +1,14 @@
 package zooshop;
 
-public class Dog {
-   
-    private double lengthDog; 
-    private int ageDog;
-    private String nameDog;
-   
-    public void setLengthDog(double l){ 
-        this.lengthDog = l;
-    }
-   
-    public void setAgeDog(int a){//задаём возраст
-        this.ageDog = a;
-    }
-   
-    public void setNameDog(String n){//задаём имя
-        this.nameDog = n;
-    }
-   
-    public double getLengthDog(){
-        return lengthDog;
-    }
-
-    public int getAgeDog(){
-        return ageDog;
-    }
-
-    public String getNameDog(){
-        return nameDog;
-    }
-
-    public void feedDog(){
+public class Dog extends Animal{
+    
+    @Override
+    public void feed(){ //покормить животное
         System.out.println("You feed dog!");
     }
-
-    public void playWithDog(){
+    
+    @Override
+    public void playWithAnimal(){ // поиграть с животным
         System.out.println("You play with dog!");
     }
-
  }
