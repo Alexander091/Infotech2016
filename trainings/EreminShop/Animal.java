@@ -14,7 +14,14 @@ public abstract class Animal {
     private String name;
     private int age;
     private double weight;
+    private final String breed;
 
+    public Animal(String name, int age, double weight, String breed) {
+        this.name = name;
+        this.age = age;
+        this.weight = weight;
+        this.breed = breed;
+    }
     public int getAge() {
         return age;
     }
@@ -38,12 +45,10 @@ public abstract class Animal {
     public void setWeight(double weight) {
         this.weight = weight;
     }
-    
-    public void PrintInfo(){
-        System.out.println("Name: " + name);
-        System.out.println("Age: " + age);
-        System.out.println("Weight: " + weight);
+
+    public String getBreed() {
+        return breed;
     }
     
-    public abstract String GetSpecies();
+    public abstract String getSpecies();
 }

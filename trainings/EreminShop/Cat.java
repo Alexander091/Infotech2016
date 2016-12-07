@@ -10,28 +10,14 @@ package Animals;
  * @author User
  */
 public class Cat extends Animal{
-
-    private final String breed;
+    
     
     public Cat(String name, int age, double weight, String breed) {
-        this.setName(name);
-        this.setAge(age);
-        this.setWeight(weight);
-        this.breed = breed;
+        super(name, age, weight, breed);
     }
-
-    public String getBreed() {
-        return breed;
-    }
-
+    
     @Override
-    public void PrintInfo() {
-        super.PrintInfo();
-        System.out.println("Breed: " + breed);
-    }
-
-    @Override
-    public String GetSpecies() {
+    public String getSpecies() {
         return "Cat";
     }
     
