@@ -6,11 +6,10 @@ public class ShopService {
     
     private int numberOfAnimals = 20;
     
-    static ArrayList<Cat> cats = new ArrayList<>();
-    static ArrayList<Dog> dogs = new ArrayList<>();   
+    ArrayList<Animal> pet = new ArrayList<>(); 
     
-    public void buyCat(Cat x){   
-        cats.add(x);
+    public void buyAnimal(Animal a){   
+        pet.remove(a);
         if(numberOfAnimals > 0){
             numberOfAnimals--;
         }
@@ -18,17 +17,12 @@ public class ShopService {
             System.out.println("Sorry, but all pets are selled!");
         }
     }
-    public void buyDog(Dog x){   
-        dogs.add(x);
-        if(numberOfAnimals > 0){
-            numberOfAnimals--;
-        }
-        else{
-            System.out.println("Sorry, but all pets are selled!");
-        }
+    public void sellAnimal(Animal a){   
+        pet.add(a);
+        numberOfAnimals++;
     }
     
-    public void showLeftAnimals(){
-        System.out.println("ZooShop has "+ numberOfAnimals + " pet(s)");
+    public int showLeftAnimals(){
+        return numberOfAnimals;
     }  
 }
