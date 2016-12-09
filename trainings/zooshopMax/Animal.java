@@ -9,26 +9,16 @@ public class Animal {
     private String name;//клички животных
     private String colour;//цвет 
     
-    public void setLength(double l){ //задаем размер
-        this.length = l;
-    }
-
-    public void setAge(int a){//задаём возраст
-        this.age = a;
-    }
-
-    public void setName(String n){//задаём имя
-        this.name = n;
-    }
-
-    public void setWeight(double w){//задаём имя
-        this.weight = w;
-    }
+    protected Animal(){}
     
-    public void setColour(String c){ //задаем размер
-        this.colour = c;
+    protected Animal(String name, String colour, int age, double length, double weight){
+        this.name = name;
+        this.colour = colour;
+        this.age = age;
+        this.length = length;
+        this.weight = weight;
     }
-    
+        
     public double getLength(){
         return length;
     }
