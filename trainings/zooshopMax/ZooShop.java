@@ -5,28 +5,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class ZooShop {
-    
+
     public static void main(String[] args) throws IOException{ 
  
         Cat cat = new Cat();
         Dog dog = new Dog();
         ShopService serv = new ShopService();
-        
+        Hello info = new Hello();
         String string = "";
         String end = "Goodbye";
         
-        System.out.println("Hello!Nice to meet you in my 'Zoo Shop'! What do you want to do?");
-        System.out.print("1.Play with cat ");
-        System.out.println(" 2.Play with dog");
-        System.out.print("3.Feed cat ");
-        System.out.println(" 4.Feed dog");
-        System.out.print("5.Buy cat ");
-        System.out.println(" 6.Buy dog");
-        System.out.print("7.Sell cat ");
-        System.out.println(" 8.Sell dog");
-        System.out.println("9.Show how animals have ZooShop?");
-        System.out.println("If You don't want anything say 'Goodbye!'");
-        
+        info.sayWelcome();
         do{
         BufferedReader buff = new BufferedReader (new InputStreamReader (System.in));
         string = buff.readLine();
@@ -44,10 +33,12 @@ public class ZooShop {
                 dog.feed();
             break;
             case "5":
-                serv.buyAnimal(cat);
+                Cat pitomec = new Cat("Lord","Orange",5,1.2,4.1);
+                serv.buyAnimal(pitomec);    
             break;
             case "6":
-                serv.buyAnimal(dog);
+                Dog pitomec2 = new Dog("Sharic","Black",4,2.0,7.0);
+                serv.buyAnimal(pitomec2);
             break;
             case "7":
                 serv.sellAnimal(cat);
@@ -60,20 +51,10 @@ public class ZooShop {
             break;
         }
         if(!string.equals(end)){
-            System.out.print("\nAnything else? ");
-            System.out.print("1.Play with cat ");
-            System.out.println(" 2.Play with dog");
-            System.out.print("3.Feed cat ");
-            System.out.println(" 4.Feed dog");
-            System.out.print("5.Buy cat ");
-            System.out.println(" 6.Buy dog");
-            System.out.print("7.Sell cat ");
-            System.out.println(" 8.Sell dog");
-            System.out.println("9.Show how animals have ZooShop?");
-            System.out.println("If You don't want anything say 'Goodbye!'");
+            info.sayAnythingElse();
         }
         if(string.equals(end)){
-            System.out.println("Goodbye,Sir!");
+            info.sayGoodbye();
         }
         }while(!string.equals(end));
         
