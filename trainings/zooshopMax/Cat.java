@@ -2,6 +2,11 @@ package zooshop;
 
 public class Cat extends Animal {
     
+    public Cat (String name, String colour, int age, double length, double weight){
+        super(name,colour,age,length,weight);
+    }
+    public Cat(){}
+    
     @Override
     public void feed(){ //покормить животное
         System.out.println("You feed cat!");
