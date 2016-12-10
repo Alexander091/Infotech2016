@@ -1,7 +1,7 @@
 
 package zooshop;
 
-public class Animal {
+public abstract class Animal {
     
     private double weight; //вес
     private double length; //длина  
@@ -45,5 +45,16 @@ public class Animal {
 
     public void playWithAnimal(){ // поиграть с животным
         System.out.println("You play with animal!");
+    }
+    
+    @Override
+    public String toString(){
+       return 
+        "Name "+this.name + 
+        " colour " + this.colour + 
+        " age " + this.age + 
+        " length "  + this.length +
+        " weight " + this.weight;
+       
     }
 }
