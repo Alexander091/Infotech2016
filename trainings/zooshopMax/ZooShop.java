@@ -11,7 +11,7 @@ public class ZooShop {
         Cat cat = new Cat();
         Dog dog = new Dog();
         ShopService serv = new ShopService();
-        Hello info = new Hello();
+        Dialogue info = new Dialogue();
         String string = "";
         String end = "Goodbye";
         
@@ -34,11 +34,13 @@ public class ZooShop {
             break;
             case "5":
                 Cat pitomec = new Cat("Lord","Orange",5,1.2,4.1);
-                serv.buyAnimal(pitomec);    
+                serv.buyAnimal(pitomec);
+                System.out.println(pitomec);
             break;
             case "6":
                 Dog pitomec2 = new Dog("Sharic","Black",4,2.0,7.0);
                 serv.buyAnimal(pitomec2);
+                System.out.println(pitomec2);
             break;
             case "7":
                 serv.sellAnimal(cat);
