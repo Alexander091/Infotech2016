@@ -1,25 +1,15 @@
 /**
  * Created by user on 03.12.2016.
  */
-public class Cat extends Animals {
+public class Cat extends Animal {
 
-    private int age;
-    private double length;
-    private double height;
-    private String name;
-    private String breed;
-
-    public Cat()
+    public Cat(int age, boolean male, String breed, String name)
     {
-
-        this.age = 1;
-        this.length = 0.3;
-        this.height = 2.3;
-        this.name = "Murzik";
-        this.breed = "Siamese";
-
+        setAge(age);
+        setMale(male);
+        setBreed(breed);
+        setName(name);
     }
-
 
     @Override
     public void voice()
