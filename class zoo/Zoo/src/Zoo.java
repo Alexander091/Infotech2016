@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by user on 03.12.2016.
@@ -7,31 +8,42 @@ import java.util.List;
 
 public class Zoo {
 
+    private List<Animal> pets = new ArrayList<Animal>();
 
-    private List<Animals> pets = new ArrayList<Animals>();
-
-    public void buyCat(List list, int num)
+    public void buyCat(Cat cat)
     {
-        Cat pet = new Cat();
-        list.add(num,pet);
+        this.pets.add(cat);
     }
 
-    public void buyDog(List list, int num)
+    public void buyDog(Dog dog)
     {
-        Dog pet = new Dog();
-        list.add(num,pet);
+        this.pets.add(dog);
     }
 
-    public void sellCat(List list, int num)
+    public void sellCat(int num)
     {
-        list.remove(num-1);
+        this.pets.remove(num-1);
     }
 
-    public void printInfo(List list)
+    public void printInfo()
     {
-        for(int i = 0; i<list.size();i++)
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 0; i< pets.size();i++)
         {
-            System.out.println((i+1) + " " + list.get(i));
+            System.out.println(this.pets.get(i));
+        }
+        System.out.println("Хотите посмотреть какого-то питомца?");
+        String answer = scanner.nextLine();
+        if(answer.equals("да") || answer.equals("Да")) {
+            System.out.println("Какой питомец интересен?");
+            int key = scanner.nextInt();
+            System.out.println(this.pets.get(key-1).getAge() + " год");
+            if (this.pets.get(key-1).isMale()==true)
+                System.out.println("Мальчик");
+            else
+                System.out.println("Девочка");
+            System.out.println(this.pets.get(key-1).getBreed());
+            System.out.println(this.pets.get(key-1).getName());
         }
     }
 }
