@@ -1,23 +1,14 @@
 /**
  * Created by user on 03.12.2016.
  */
-public class Dog extends Animals {
+public class Dog extends Animal {
 
-    private int age;
-    private double length;
-    private double height;
-    private String name;
-    private String breed;
-
-    public Dog()
+    public Dog(int age, boolean male, String breed, String name)
     {
-
-        this.age = 2;
-        this.length = 0.7;
-        this.height = 5.4;
-        this.name = "Sharik";
-        this.breed = "Husky";
-
+        setAge(age);
+        setMale(male);
+        setBreed(breed);
+        setName(name);
     }
 
     @Override
