@@ -7,25 +7,20 @@
 package animalshop;
 
 public class shop {
- static int catFood = 20;
+ 
      public static void main(String[] args){ 
   
-         Cat cat = new Cat();
+         
          ShopService service = new ShopService();
          
-         cat.setName("Joni"); 
-         cat.setAge(2); 
-         cat.setWeight(3);
-         cat.play();
+      int i =0;
+         while (i == 0) {
+         i=service.menu();
          
-         service.buyCats(cat);
-         service.buyCats(cat);
-         service.buyCats(cat);
-         
-         
-         service.feedcats(catFood);
-         
-         
+                        }
+     
+      System.out.println("by");  
+    
      }
      
  }

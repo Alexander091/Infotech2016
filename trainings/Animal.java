@@ -5,18 +5,18 @@
  */
 package animalshop;
 
+
 /**
  *
  * @author PROGRAMMER3000
  */
-public class Animal {
-    
-    private double weight; 
+abstract class Animal {
+     
     private int age;
-    private String name;
+    private String name, breed;
     
-    public void setWeight(double l){
-        this.weight = l;
+    public void setBreed(String l){
+        this.breed = l;
    }
     
     public void setAge(int a){
@@ -27,8 +27,8 @@ public class Animal {
         this.name = n;
     }
     
-    public double getWeight(){
-        return weight;
+    public String getBreed(){
+        return breed;
     }
     
    public int getAge(){
@@ -39,13 +39,13 @@ public class Animal {
         return name;
     }
     
-    public void feed(){
-        System.out.println("You feed!");
- 
-    }
     
-   public void play(){
-     System.out.println("You play with!");
-}
+
+
+ 
+    
+    
+
+
   
  }

@@ -5,12 +5,12 @@
  */
 package animalshop;
 
+
+
 public class Cat extends Animal {
         
 
- @Override  
-   public void play(){
-     System.out.println("You play with cat!");
+  
+ 
 }
   
- }
