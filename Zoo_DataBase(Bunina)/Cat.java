@@ -1,10 +1,8 @@
 
 public class Cat extends Animal {
 
-   public Cat(String name, int age) {
-        this.name = name;
-        this.age = age;
-        System.out.println(name +" "+ age);
+    public Cat(String name, int age,String colour) {
+        super(name,age,colour);
     }
 
     @Override
