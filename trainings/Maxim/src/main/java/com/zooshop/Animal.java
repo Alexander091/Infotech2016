@@ -1,6 +1,6 @@
 package com.zooshop;
 
-public class Animal {
+public abstract class Animal {
 
         private double weight; //вес
         private double length; //длина
