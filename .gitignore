@@ -10,7 +10,6 @@
 *.idea
 *out
 *.iml
-*.xml
 *.md
 *target
 *test

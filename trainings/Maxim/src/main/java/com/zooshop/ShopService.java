@@ -2,24 +2,29 @@ package com.zooshop;
 
 import java.util.ArrayList;
 
-public class ShopService {
+public class ShopService  {
 
-        private ArrayList<Animal> pet = new ArrayList<Animal>();
+    private final static int PAR_ID_CAT = 1;
+    private final static int PAR_ID_DOG = 1;
+    private final static int OBJ_TYPE_ID_CAT = 2;
+    private final static int OBJ_TYPE_ID_DOG = 3;
 
-        public void buyAnimal(Animal a){
+    DAO dao = new DAO();
 
-            if(pet.size() > 0){
-                pet.remove(a);
-            }
-            else{
-                System.out.println("Sorry, but all pets are selled!");
-            }
-        }
-        public void sellAnimal(Animal a){
-            pet.add(a);
-        }
+    public  void buyAnimal(String name){
+        dao.deleteAnimal(name);
+    }
 
-        public int showLeftAnimals(){
-            return pet.size();
-        }
+    public void sellCat(int obj_id,String name){
+        dao.saveAnimal(obj_id, PAR_ID_CAT, OBJ_TYPE_ID_CAT, name);
+    }
+
+    public void sellDog(int obj_id,String name){
+        dao.saveAnimal(obj_id, PAR_ID_DOG, OBJ_TYPE_ID_DOG, name);
+    }
+
+    public void showAllAnimal(){
+        dao.printAllObjects();
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.zooshop;
 
+import org.postgresql.util.PSQLException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,12 +17,7 @@ public class Shop {
         String string = "";
         String end = "Goodbye";
 
-        DAO d = new DAO();
-        d.setAnimal(4, 1, 2, "cat3");
-        d.getAll();
-        d.closeConnection(); // вызов DAO
-
-       /* info.sayWelcome();
+        info.sayWelcome();
         do{
             BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
             string = buff.readLine();
@@ -38,23 +35,23 @@ public class Shop {
                     dog.feed();
                     break;
                 case "5":
-                    Cat pitomec = new Cat("Lord","Orange",5,1.2,4.1);
-                    serv.buyAnimal(pitomec);
-                    System.out.println(pitomec);
+                    System.out.println("What is name of animal?");
+                    String name = buff.readLine();
+                    serv.buyAnimal(name);
                     break;
                 case "6":
-                    Dog pitomec2 = new Dog("Sharic","Black",4,2.0,7.0);
-                    serv.buyAnimal(pitomec2);
-                    System.out.println(pitomec2);
+                    System.out.println("What is name of animal?");
+                    String name2 = buff.readLine();
+                    serv.buyAnimal(name2);
                     break;
                 case "7":
-                    serv.sellAnimal(cat);
+                    serv.sellCat(4,"cat4");
                     break;
                 case "8":
-                    serv.sellAnimal(dog);
+                    serv.sellDog(5,"dog2");
                     break;
                 case "9":
-                    System.out.println("The ZooShop has " + serv.showLeftAnimals() + " pets");
+                    serv.showAllAnimal();
                     break;
             }
             if(!string.equals(end)){
@@ -63,7 +60,7 @@ public class Shop {
             if(string.equals(end)){
                 info.sayGoodbye();
             }
-        }while(!string.equals(end));*/
+        }while(!string.equals(end));
 
     }
 }

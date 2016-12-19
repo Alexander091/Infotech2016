@@ -16,8 +16,8 @@ public class DAO {
 
         try {
             Class.forName("org.postgresql.Driver"); //проверяем наличие драйвера
-        } catch (ClassNotFoundException e) {  //ловим ошибку
-            System.out.println("Driver not found!");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
         try{
@@ -36,7 +36,7 @@ public class DAO {
         }
     }
 
-    public void getAll() { // получаем все строки
+    public void printAllObjects() { // получаем все строки
         try{
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -45,19 +45,28 @@ public class DAO {
                 int parent_id = resultSet.getInt("parent_id");
                 int object_type_id = resultSet.getInt("object_type_id");
                 String name = resultSet.getString("name");
-                System.out.println(object_id + " " + parent_id + " " + object_type_id + " " + name);
+                System.out.println(object_id + " " + name );
             }
         }catch (SQLException s) {
             s.printStackTrace();
         }
-
     }
 
-    public void setAnimal(int obj_id, int par_id, int obj_type_id, String name){ //добавляем в таблицу
+    public void saveAnimal(int obj_id, int par_id, int obj_type_id, String name){ //добавляем в таблицу
         String query1 = "INSERT INTO objects (object_id, parent_id, object_type_id, name) VALUES ('"+obj_id+"','"+par_id+"','"+obj_type_id+"', '"+name+"');";
         try {
             statement = connection.createStatement();
             statement.executeUpdate(query1);
+        }catch (SQLException s) {
+            s.printStackTrace();
+        }
+    }
+
+    public void deleteAnimal(String name){ //удаляем из таблицы
+        String query2 = "DELETE FROM objects WHERE name = '"+name+"';";
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate(query2);
         }catch (SQLException s) {
             s.printStackTrace();
         }
