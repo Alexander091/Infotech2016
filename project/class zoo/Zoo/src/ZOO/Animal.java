@@ -54,7 +54,7 @@ public abstract class Animal {
         this.name = name;
     }
 
-    protected static void addnewAnimal(Animal animal) throws IOException {
+    protected static String addnewAnimal(Animal animal) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Какой возраст питомца нужен?");
         animal.age = Integer.parseInt(reader.readLine());
@@ -64,6 +64,7 @@ public abstract class Animal {
         animal.breed = reader.readLine();
         System.out.println("Какое имя дать?");
         animal.name = reader.readLine();
+        return animal.name;
     }
 
     protected void voice(){
