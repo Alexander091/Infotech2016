@@ -3,8 +3,6 @@ package ZOO;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by user on 03.12.2016.
@@ -12,45 +10,49 @@ import java.util.List;
 
 public class Zoo {
 
-    private List<Animal> pets = new ArrayList<Animal>();
+    private final static int PAR_ID = 1;
+    private final static int OBJ_TYPE_ID_CAT = 2;
+    private final static int OBJ_TYPE_ID_DOG = 3;
+    private DAO dao;
 
-    protected void buyCat(Cat cat)
-    {
-        this.pets.add(cat);
+    public Zoo(){
+        dao = new DAO();
     }
 
-    protected void buyDog(Dog dog)
+    protected void buyCat(int obj_id,String name)
     {
-        this.pets.add(dog);
+        dao.saveAnimal(obj_id, PAR_ID, OBJ_TYPE_ID_CAT,name);
     }
 
-    protected void sellCat(int num)
-    {
-        this.pets.remove(num-1);
+    public void buyDog(int obj_id,String name){
+        dao.saveAnimal(obj_id, PAR_ID, OBJ_TYPE_ID_DOG,name);
     }
 
-    protected void printInfo() throws IOException {
+    protected void sellCat(String name) {
+        dao.deleteAnimal(name);
+    }
+
+    protected void sellDog(String name) {
+        dao.deleteAnimal(name);
+    }
+
+    protected void printInfo() {
+        dao.printAllObjects();
+    }
+    public void closeShop(){
+        dao.closeConnection();
+    }
+
+    protected void printAnimal() throws IOException{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Хотите посмотреть какого-то питомца?");
+        System.out.println("Какие животные интересуют?(cat/dog)?");
         String answer = reader.readLine();
-        if(answer.equals("да") || answer.equals("Да") || answer.equals("Yes") || answer.equals("yes") || answer.equals("1")) {
-            System.out.println("Какой питомец интересен?");
-            int key = Integer.parseInt(reader.readLine());
-            System.out.println(this.pets.get(key-1).getAge() + " год");
-            if (this.pets.get(key-1).isMale()==true)
-                System.out.println("Мальчик");
-            else
-                System.out.println("Девочка");
-            System.out.println(this.pets.get(key-1).getBreed());
-            System.out.println(this.pets.get(key-1).getName());
-        }
-    }
-
-    protected void printIformation(){
-        for (int i = 0; i< pets.size();i++)
-        {
-            System.out.println(this.pets.get(i));
-        }
+        if(answer.equals("cat"))
+            dao.allCats();
+        else if(answer.equals("dog"))
+            dao.allDogs();
+        else
+            System.out.println("Не найдено такого питомца...");
     }
 
 }
