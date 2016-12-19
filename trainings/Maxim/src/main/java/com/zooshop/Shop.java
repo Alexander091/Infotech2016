@@ -59,6 +59,7 @@ public class Shop {
             }
             if(string.equals(end)){
                 info.sayGoodbye();
+                serv.closeShop();
             }
         }while(!string.equals(end));
 

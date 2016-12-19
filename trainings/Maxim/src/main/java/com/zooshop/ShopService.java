@@ -8,10 +8,13 @@ public class ShopService  {
     private final static int PAR_ID_DOG = 1;
     private final static int OBJ_TYPE_ID_CAT = 2;
     private final static int OBJ_TYPE_ID_DOG = 3;
+    private DAO dao;
 
-    DAO dao = new DAO();
+    public ShopService() {
+        dao = new DAO();
+    }
 
-    public  void buyAnimal(String name){
+    public void buyAnimal(String name){
         dao.deleteAnimal(name);
     }
 
@@ -25,6 +28,9 @@ public class ShopService  {
 
     public void showAllAnimal(){
         dao.printAllObjects();
+    }
+    public void closeShop(){
+        dao.closeConnection();
     }
 
 }
