@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.Scanner;
 
 public class Shop {
 
@@ -35,20 +36,22 @@ public class Shop {
                     dog.feed();
                     break;
                 case "5":
-                    System.out.println("What is name of animal?");
-                    String name = buff.readLine();
-                    serv.buyAnimal(name);
+                    System.out.println("What is id of animal?");
+                    Scanner bc = new Scanner(System.in);
+                    serv.buyAnimal(bc.nextInt());
                     break;
                 case "6":
-                    System.out.println("What is name of animal?");
-                    String name2 = buff.readLine();
-                    serv.buyAnimal(name2);
+                    System.out.println("What is id of animal?");
+                    Scanner bd = new Scanner(System.in);
+                    serv.buyAnimal(bd.nextInt());
                     break;
                 case "7":
-                    serv.sellCat(4,"cat4");
+                    Scanner sellCat = new Scanner(System.in);
+                    serv.sellCat(sellCat.nextInt(), "cat");
                     break;
                 case "8":
-                    serv.sellDog(5,"dog2");
+                    Scanner sellDog = new Scanner(System.in);
+                    serv.sellDog(sellDog.nextInt(), "dog");
                     break;
                 case "9":
                     serv.showAllAnimal();

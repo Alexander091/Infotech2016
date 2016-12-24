@@ -2,23 +2,22 @@ package com.zooshop;
 
 import java.sql.*;
 import java.sql.Statement;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class DAO {
 
     private final static String URL = "jdbc:postgresql://localhost:5432/postgres";
     private final static String USERNAME = "postgres";
     private final static String PASSWORD = "123";
-    private final String query = "select * from objects"; //запрос
+    private final static String QUERY_SELECT = "SELECT * FROM objects  ORDER BY object_id"; //запрос
+    private final static String QUERY_INSERT = "INSERT INTO objects (object_id, parent_id, object_type_id, name) VALUES (?, ?, ?, ?)";
+    private final static String QUERY_DELETE = "DELETE FROM objects WHERE object_id = ? ";
+
     private Connection connection;
-    private Statement statement;
+    private PreparedStatement preparedStatement;
 
     public DAO() { // конструктор с установкой соединение с БД
-
-        try {
-            Class.forName("org.postgresql.Driver"); //проверяем наличие драйвера
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
         try{
             connection = DriverManager.getConnection(URL,USERNAME,PASSWORD); // устанавливаем соединение
@@ -30,45 +29,51 @@ public class DAO {
     public void closeConnection() { //закрываем соединение
         try{
             connection.close();
-            statement.close();
+            preparedStatement.close();
         }catch (SQLException s){
             s.printStackTrace();
         }
     }
 
-    public void printAllObjects() { // получаем все строки
+    public Map getAllObjects() { // получаем все строки
+        Map map = new TreeMap();
         try{
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+            preparedStatement = connection.prepareStatement(QUERY_SELECT);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 int object_id = resultSet.getInt("object_id");
-                int parent_id = resultSet.getInt("parent_id");
-                int object_type_id = resultSet.getInt("object_type_id");
+                //String value = resultSet.getString("value");
                 String name = resultSet.getString("name");
-                System.out.println(object_id + " " + name );
+                map.put(object_id, name);
+                //System.out.println(object_id + " " + name);
             }
         }catch (SQLException s) {
             s.printStackTrace();
         }
+        return map;
     }
 
     public void saveAnimal(int obj_id, int par_id, int obj_type_id, String name){ //добавляем в таблицу
-        String query1 = "INSERT INTO objects (object_id, parent_id, object_type_id, name) VALUES ('"+obj_id+"','"+par_id+"','"+obj_type_id+"', '"+name+"');";
         try {
-            statement = connection.createStatement();
-            statement.executeUpdate(query1);
+            preparedStatement = connection.prepareStatement(QUERY_INSERT);
+            preparedStatement.setInt(1, obj_id);
+            preparedStatement.setInt(2, par_id);
+            preparedStatement.setInt(3, obj_type_id);
+            preparedStatement.setString(4, name);
+            preparedStatement.execute();
         }catch (SQLException s) {
             s.printStackTrace();
         }
     }
 
-    public void deleteAnimal(String name){ //удаляем из таблицы
-        String query2 = "DELETE FROM objects WHERE name = '"+name+"';";
+    public void deleteAnimal(int obj_id){ //удаляем из таблицы
         try {
-            statement = connection.createStatement();
-            statement.executeUpdate(query2);
+            preparedStatement = connection.prepareStatement(QUERY_DELETE);
+            preparedStatement.setInt(1, obj_id);
+            preparedStatement.execute();
         }catch (SQLException s) {
             s.printStackTrace();
         }
     }
+
 }
