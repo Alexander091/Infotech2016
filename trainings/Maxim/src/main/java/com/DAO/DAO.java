@@ -3,6 +3,8 @@ package com.DAO;
 import com.annotation.Attribute;
 import com.annotation.ObjectType;
 import com.zoo.Animal;
+import com.zoo.Cat;
+import com.zoo.Dog;
 import com.zoo.Entity;
 
 import java.lang.reflect.Field;
@@ -11,11 +13,17 @@ import java.util.*;
 
 public class DAO {
 
+    private final static int PAR_ID_CAT = 1;
+    private final static int PAR_ID_DOG = 1;
+    private final static int OBJ_TYPE_ID_CAT = 2;
+    private final static int OBJ_TYPE_ID_DOG = 3;
+
     private final static String URL = "jdbc:postgresql://localhost:5432/postgres";
     private final static String USERNAME = "postgres";
     private final static String PASSWORD = "123";
     private final static String QUERY_SELECT = "SELECT * FROM objects  ORDER BY object_id"; //запрос
     private final static String QUERY_INSERT = "INSERT INTO objects (parent_id, object_type_id, name) VALUES (?, ?, ?)";
+    private final static String QUERY_INSERT_VALUE = "INSERT INTO params (value, attr_id) VALUES (?, ?)";
     private final static String QUERY_DELETE = "DELETE FROM objects WHERE object_id = ? ";
 
     private Connection connection;
@@ -38,18 +46,90 @@ public class DAO {
         }
     }
 
-    public void getAllObjects() { // получаем все строки
-        try{
-            preparedStatement = connection.prepareStatement(QUERY_SELECT);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                int object_id = resultSet.getInt("object_id");
-                //String value = resultSet.getString("value");
-                String name = resultSet.getString("name");
-                System.out.println(object_id + " " + name);
+    public <T> void set(T obj) throws IllegalAccessException {
+        Class cl = obj.getClass();
+        Class cl2 = cl.getSuperclass();
+        if (obj instanceof Dog){
+            try {
+                preparedStatement = connection.prepareStatement(QUERY_INSERT);
+                preparedStatement.setInt(1, PAR_ID_DOG);
+                preparedStatement.setInt(2, OBJ_TYPE_ID_DOG);
+                preparedStatement.setString(3, "dog");
+                preparedStatement.execute();
+            }catch (SQLException sql){
+                sql.printStackTrace();
             }
-        }catch (SQLException s) {
-            s.printStackTrace();
+        }
+        else if (obj instanceof Cat){
+            try {
+                preparedStatement = connection.prepareStatement(QUERY_INSERT);
+                preparedStatement.setInt(1, PAR_ID_CAT);
+                preparedStatement.setInt(2, OBJ_TYPE_ID_CAT);
+                preparedStatement.setString(3, "cat");
+                preparedStatement.execute();
+            }catch (SQLException sql){
+                sql.printStackTrace();
+            }
+        }
+        Field[] fieldSuperClass = cl2.getDeclaredFields();
+        Field[] fieldClass = cl.getDeclaredFields();
+        for (Field field : fieldSuperClass){
+            if (field.isAnnotationPresent(Attribute.class)){
+                field.setAccessible(true);
+                Attribute attr = field.getAnnotation(Attribute.class);
+                try {
+                    preparedStatement = connection.prepareStatement(QUERY_INSERT_VALUE);
+                    switch (attr.value()) {
+                        case 1:
+                            preparedStatement.setInt(1, (Integer) field.get(obj));
+                            preparedStatement.setInt(2, 1);
+                            preparedStatement.execute();
+                            break;
+                        case 2:
+                            preparedStatement.setInt(1, (Integer) field.get(obj));
+                            preparedStatement.setInt(2, 2);
+                            preparedStatement.execute();
+                            break;
+                        case 3:
+                            preparedStatement.setInt(1, (Integer) field.get(obj));
+                            preparedStatement.setInt(2, 3);
+                            preparedStatement.execute();
+                            break;
+                        case 4:
+                            preparedStatement.setString(1, (String) field.get(obj));
+                            preparedStatement.setInt(2, 4);
+                            preparedStatement.execute();
+                            break;
+                        case 5:
+                            preparedStatement.setString(1, (String) field.get(obj));
+                            preparedStatement.setInt(2, 5);
+                            preparedStatement.execute();
+                            break;
+                    }
+                }catch (SQLException sql){
+                    sql.printStackTrace();
+                }
+                if (field.get(obj)!= null){
+                    System.out.println(field.get(obj));
+                }
+            }
+        }
+        for (Field field1 : fieldClass){
+            if (field1.isAnnotationPresent(Attribute.class)){
+                field1.setAccessible(true);
+                Attribute attr = field1.getAnnotation(Attribute.class);
+                try {
+                    preparedStatement = connection.prepareStatement(QUERY_INSERT_VALUE);
+                    preparedStatement.setInt(1, attr.value());
+                    preparedStatement.setInt(2, 6);
+                    preparedStatement.execute();
+                }catch (SQLException sql){
+                    sql.printStackTrace();
+                }
+                if (field1.get(obj) != null ){
+                    System.out.println(field1.get(obj));
+                }
+            }
         }
     }
 
@@ -92,7 +172,7 @@ public class DAO {
             {
                 field.setAccessible(true);
                 Attribute attrAnnotation = field.getAnnotation(Attribute.class);
-                Long attrId = attrAnnotation.value();
+                int attrId = attrAnnotation.value();
                 System.out.println(attrId);
                 for (Map.Entry<Long, String> entry : resultSetObjectValues.entrySet()) {
                     if(entry.getKey().equals(attrId)){
@@ -111,6 +191,5 @@ public class DAO {
         }
         return fields;
     }
-    //TODO Раскидать по пакетам аннотации и т.д
     //TODO Dependency Injecion
 }

@@ -10,13 +10,8 @@ public class ShopService  {
         dao = new DAO();
     }
 
-    private final static int PAR_ID_CAT = 1;
-    private final static int PAR_ID_DOG = 1;
-    private final static int OBJ_TYPE_ID_CAT = 2;
-    private final static int OBJ_TYPE_ID_DOG = 3;
-
     public void buyAnimal(int objId){
-        dao.deleteAnimal(objId); //TODO использовать id вместо имени
+        dao.deleteAnimal(objId);
     }
 
     public void sellCat(int objId, String name){
@@ -28,7 +23,7 @@ public class ShopService  {
     }
 
     public void showAllAnimal(){
-        dao.getAllObjects();
+        //dao.getAllObjects();
         System.out.println();
     }
     public void closeShop(){

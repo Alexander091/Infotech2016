@@ -1,18 +1,24 @@
 package com.zooshop;
 
 import com.DAO.DAO;
+import com.zoo.Animal;
 import com.zoo.Cat;
+import com.zoo.Dog;
 
 import java.io.IOException;
 
 public class Shop {
 
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, IOException {
-        Cat cat = DAO.getObject(Cat.class);
+        //Cat cat = DAO.getObject(Cat.class);
+        Animal cat = new Cat();
         cat.setName("Murzik");
-        cat.setColour("Black");
-        cat.setAge(1);
-        System.out.println(cat);
+        cat.setColour("Orange");
+        cat.setAge(3);
+        cat.setWeight(4);
+        cat.setLength(2);
+        DAO dao = new DAO();
+        dao.set(cat);
         //Dog dog = DAO.getObject(Dog.class);
        /* ShopService serv = new ShopService(); //TODO добавить инициализацию, в DAO и ShopService,
         Dialogue info = new Dialogue();         //TODO сделать спринговские бины

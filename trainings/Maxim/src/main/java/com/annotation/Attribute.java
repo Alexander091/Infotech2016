@@ -1,9 +1,10 @@
 package com.annotation;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.*;
 
+@Inherited
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Attribute {
-    public long value();
+    public int value();
 }

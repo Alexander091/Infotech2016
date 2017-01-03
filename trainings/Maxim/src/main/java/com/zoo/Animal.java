@@ -5,9 +5,9 @@ import com.annotation.Attribute;
 public abstract class Animal extends Entity {
 
     @Attribute(1)
-    private double weight; //вес
+    private int weight; //вес
     @Attribute(2)
-    private double length; //длина
+    private int length; //длина
     @Attribute(3)
     private int age;//возраст
     @Attribute(4)
@@ -19,11 +19,11 @@ public abstract class Animal extends Entity {
         this.name = name;
     }
 
-    public void setWeight(double weight){
+    public void setWeight(int weight){
         this.weight = weight;
     }
 
-    public void setLength(double length){
+    public void setLength(int length){
         this.length = length;
     }
 
