@@ -5,22 +5,19 @@ import com.zoo.Animal;
 import com.zoo.Cat;
 import com.zoo.Dog;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Shop {
 
-    public static void main(String[] args) throws InstantiationException, IllegalAccessException, IOException {
-        //Cat cat = DAO.getObject(Cat.class);
+    public static void main(String[] args) throws InstantiationException, IllegalAccessException, IOException, SQLException {
+
         Animal cat = new Cat();
-        cat.setName("Murzik");
-        cat.setColour("Orange");
-        cat.setAge(3);
-        cat.setWeight(4);
-        cat.setLength(2);
-        DAO dao = new DAO();
-        dao.set(cat);
-        //Dog dog = DAO.getObject(Dog.class);
-       /* ShopService serv = new ShopService(); //TODO добавить инициализацию, в DAO и ShopService,
+        Animal dog = new Dog();                  //TODO Dependency Injecion
+        ShopService sh = new ShopService();     //TODO добавить инициализацию, в DAO и ShopService,
         Dialogue info = new Dialogue();         //TODO сделать спринговские бины
         String string;
         String end = "Goodbye";
@@ -43,34 +40,57 @@ public class Shop {
                     dog.feed();
                     break;
                 case "5":
-                    System.out.println("Please, put data about cat, which you want buy");
-                    Scanner sc = new Scanner(System.in);
-                    while (!sc.hasNext()){
-                        cat.setName(sc.next());
-                        cat.setWeight(sc.nextDouble());
-                        cat.setLength(sc.nextDouble());
-                        cat.setAge(sc.nextInt());
-                        cat.setColour(sc.next());
-                    }
-                    //System.out.println("What is id of animal?");
-                    //Scanner bc = new Scanner(System.in);
-                    //serv.buyAnimal(bc.nextInt());
+                    System.out.println("What id");
+                    Scanner idCat = new Scanner(System.in);
+                    sh.buyAnimal(idCat.nextInt());
                     break;
                 case "6":
-                    System.out.println("What is id of animal?");
-                    Scanner bd = new Scanner(System.in);
-                    serv.buyAnimal(bd.nextInt());
+                    System.out.println("What id");
+                    Scanner idDog = new Scanner(System.in);
+                    sh.buyAnimal(idDog.nextInt());
                     break;
                 case "7":
-                    Scanner scanner = new Scanner(System.in);
-                        serv.sellCat(scanner.nextInt(), "cat");
+                    System.out.println("Please, put data about cat, which you want buy");
+                    System.out.println("Enter name");
+                    Scanner name = new Scanner(System.in);
+                    cat.setName(name.next());
+                    System.out.println("Enter weight");
+                    Scanner weight = new Scanner(System.in);
+                    cat.setWeight(weight.nextInt());
+                    System.out.println("Enter length");
+                    Scanner length = new Scanner(System.in);
+                    cat.setLength(length.nextInt());
+                    System.out.println("Enter age");
+                    Scanner age = new Scanner(System.in);
+                    cat.setAge(age.nextInt());
+                    System.out.println("Enter colour");
+                    Scanner colour = new Scanner(System.in);
+                    cat.setColour(colour.next());
+                    sh.sellAnimal(cat);
                     break;
                 case "8":
-                    Scanner scanner1 = new Scanner(System.in);
-                    serv.sellDog(scanner1.nextInt(), "dog");
+                    System.out.println("Please, put data about dog, which you want sell");
+                    System.out.println("Enter name");
+                    Scanner name1 = new Scanner(System.in);
+                    dog.setName(name1.next());
+                    System.out.println("Enter weight");
+                    Scanner weight1 = new Scanner(System.in);
+                    dog.setWeight(weight1.nextInt());
+                    System.out.println("Enter length");
+                    Scanner length1 = new Scanner(System.in);
+                    dog.setLength(length1.nextInt());
+                    System.out.println("Enter age");
+                    Scanner age1 = new Scanner(System.in);
+                    dog.setAge(age1.nextInt());
+                    System.out.println("Enter colour");
+                    Scanner colour1 = new Scanner(System.in);
+                    dog.setColour(colour1.next());
+                    sh.sellAnimal(dog);
                     break;
                 case "9":
-                    serv.showAllAnimal();
+                    System.out.println("Enter id");
+                    Scanner id = new Scanner(System.in);
+                    sh.showAllAnimal(id.nextInt());
                     break;
             }
             if(!string.equals(end)){
@@ -78,9 +98,9 @@ public class Shop {
             }
             if(string.equals(end)){
                 info.sayGoodbye();
-                serv.closeShop();
+                sh.closeShop();
             }
-        }while(!string.equals(end));*/
+        }while(!string.equals(end));
 
     }
 }

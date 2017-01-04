@@ -1,6 +1,10 @@
 package com.zooshop;
 
 import com.DAO.DAO;
+import com.zoo.Animal;
+
+import java.sql.SQLException;
+import java.util.Iterator;
 
 public class ShopService  {
 
@@ -11,21 +15,17 @@ public class ShopService  {
     }
 
     public void buyAnimal(int objId){
-        dao.deleteAnimal(objId);
+        dao.delete(objId);
     }
 
-    public void sellCat(int objId, String name){
-       // dao.saveAnimal(objId, PAR_ID_CAT, OBJ_TYPE_ID_CAT, name);
+    public <T extends Animal> void sellAnimal(T obj) throws IllegalAccessException {
+        dao.save(obj);
     }
 
-    public void sellDog(int objId, String name){
-       // dao.saveAnimal(objId, PAR_ID_DOG, OBJ_TYPE_ID_DOG, name);
+    public void showAllAnimal(int id) throws SQLException {
+       System.out.println(dao.get(id));
     }
 
-    public void showAllAnimal(){
-        //dao.getAllObjects();
-        System.out.println();
-    }
     public void closeShop(){
         dao.closeConnection();
     }

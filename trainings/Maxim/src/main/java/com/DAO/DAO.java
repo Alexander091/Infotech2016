@@ -2,7 +2,6 @@ package com.DAO;
 
 import com.annotation.Attribute;
 import com.annotation.ObjectType;
-import com.zoo.Animal;
 import com.zoo.Cat;
 import com.zoo.Dog;
 import com.zoo.Entity;
@@ -13,17 +12,17 @@ import java.util.*;
 
 public class DAO {
 
-    private final static int PAR_ID_CAT = 1;
-    private final static int PAR_ID_DOG = 1;
-    private final static int OBJ_TYPE_ID_CAT = 2;
-    private final static int OBJ_TYPE_ID_DOG = 3;
+    private final static int PAR_ID_CAT = 2;
+    private final static int PAR_ID_DOG = 3;
+    private final static int OBJ_TYPE_ID_CAT = 3;
+    private final static int OBJ_TYPE_ID_DOG = 4;
 
-    private final static String URL = "jdbc:postgresql://localhost:5432/postgres";
+    private final static String URL = "jdbc:postgresql://localhost:5433/postgres";
     private final static String USERNAME = "postgres";
     private final static String PASSWORD = "123";
-    private final static String QUERY_SELECT = "SELECT * FROM objects  ORDER BY object_id"; //запрос
+    private final static String QUERY_SELECT = "SELECT  o.object_id, o.name, p.value FROM  objects o JOIN params p ON o.object_id = p.object_id WHERE o.object_id = ?;"; //запрос
     private final static String QUERY_INSERT = "INSERT INTO objects (parent_id, object_type_id, name) VALUES (?, ?, ?)";
-    private final static String QUERY_INSERT_VALUE = "INSERT INTO params (value, attr_id) VALUES (?, ?)";
+    private final static String QUERY_INSERT_VALUE = "INSERT INTO params (attr_id, value) VALUES (?, ?)";
     private final static String QUERY_DELETE = "DELETE FROM objects WHERE object_id = ? ";
 
     private Connection connection;
@@ -46,7 +45,7 @@ public class DAO {
         }
     }
 
-    public <T> void set(T obj) throws IllegalAccessException {
+    public <T> void save(T obj) throws IllegalAccessException {
         Class cl = obj.getClass();
         Class cl2 = cl.getSuperclass();
         if (obj instanceof Dog){
@@ -81,28 +80,28 @@ public class DAO {
                     preparedStatement = connection.prepareStatement(QUERY_INSERT_VALUE);
                     switch (attr.value()) {
                         case 1:
-                            preparedStatement.setInt(1, (Integer) field.get(obj));
-                            preparedStatement.setInt(2, 1);
+                            preparedStatement.setInt(1, 1);
+                            preparedStatement.setInt(2, (Integer) field.get(obj));
                             preparedStatement.execute();
                             break;
                         case 2:
-                            preparedStatement.setInt(1, (Integer) field.get(obj));
-                            preparedStatement.setInt(2, 2);
+                            preparedStatement.setInt(1, 2);
+                            preparedStatement.setInt(2, (Integer) field.get(obj));
                             preparedStatement.execute();
                             break;
                         case 3:
-                            preparedStatement.setInt(1, (Integer) field.get(obj));
-                            preparedStatement.setInt(2, 3);
+                            preparedStatement.setInt(1, 3);
+                            preparedStatement.setInt(2, (Integer) field.get(obj));
                             preparedStatement.execute();
                             break;
                         case 4:
-                            preparedStatement.setString(1, (String) field.get(obj));
-                            preparedStatement.setInt(2, 4);
+                            preparedStatement.setInt(1, 4);
+                            preparedStatement.setString(2, (String) field.get(obj));
                             preparedStatement.execute();
                             break;
                         case 5:
-                            preparedStatement.setString(1, (String) field.get(obj));
-                            preparedStatement.setInt(2, 5);
+                            preparedStatement.setInt(1, 5);
+                            preparedStatement.setString(2, (String) field.get(obj));
                             preparedStatement.execute();
                             break;
                     }
@@ -133,20 +132,21 @@ public class DAO {
         }
     }
 
-    public void saveAnimal(Animal animal){ //добавляем в таблицу
-        try {
-            preparedStatement = connection.prepareStatement(QUERY_INSERT);
-            preparedStatement.setInt(1,animal.getType());
-           /* preparedStatement.setInt(2, animal.);
-            preparedStatement.setInt(3, objTypeId);*/
-            preparedStatement.setString(3, animal.getName());
-            preparedStatement.execute();
-        }catch (SQLException s) {
-            s.printStackTrace();
+    public Map<String, String> get(int id) throws SQLException {
+        Map<String, String> object = new HashMap<>();
+        preparedStatement = connection.prepareStatement(QUERY_SELECT);
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()){
+            //int objectId = resultSet.getInt("object_id");
+            String name = resultSet.getString("name");
+            String value = resultSet.getString("value");
+            object.put(value, name);
         }
+        return object;
     }
 
-    public void deleteAnimal(int objId){ //удаляем из таблицы
+    public void delete(int objId){ //удаляем из таблицы
         try {
             preparedStatement = connection.prepareStatement(QUERY_DELETE);
             preparedStatement.setInt(1, objId);
@@ -191,5 +191,5 @@ public class DAO {
         }
         return fields;
     }
-    //TODO Dependency Injecion
+
 }
