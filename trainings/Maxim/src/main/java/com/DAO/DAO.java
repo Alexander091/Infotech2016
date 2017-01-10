@@ -17,7 +17,7 @@ public class DAO {
     private final static int OBJ_TYPE_ID_CAT = 3;
     private final static int OBJ_TYPE_ID_DOG = 4;
 
-    private final static String URL = "jdbc:postgresql://localhost:5433/postgres";
+    private final static String URL = "jdbc:postgresql://localhost:5432/postgres";
     private final static String USERNAME = "postgres";
     private final static String PASSWORD = "123";
     private final static String QUERY_SELECT = "SELECT  o.object_id, o.name, p.value FROM  objects o JOIN params p ON o.object_id = p.object_id WHERE o.object_id = ?;"; //запрос
