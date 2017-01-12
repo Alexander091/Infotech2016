@@ -46,42 +46,48 @@ public class DAO {
     }
 
     public <T> void save(T obj) throws IllegalAccessException {
-        Class cl = obj.getClass();
-        Class cl2 = cl.getSuperclass();
-        if (obj instanceof Dog){
-            try {
-                preparedStatement = connection.prepareStatement(QUERY_INSERT);
-                preparedStatement.setInt(1, PAR_ID_DOG);
-                preparedStatement.setInt(2, OBJ_TYPE_ID_DOG);
-                preparedStatement.setString(3, "dog");
-                preparedStatement.execute();
-            }catch (SQLException sql){
-                sql.printStackTrace();
-            }
-        }
-        else if (obj instanceof Cat){
-            try {
-                preparedStatement = connection.prepareStatement(QUERY_INSERT);
-                preparedStatement.setInt(1, PAR_ID_CAT);
-                preparedStatement.setInt(2, OBJ_TYPE_ID_CAT);
-                preparedStatement.setString(3, "cat");
-                preparedStatement.execute();
-            }catch (SQLException sql){
-                sql.printStackTrace();
-            }
-        }
-        Field[] fieldSuperClass = cl2.getDeclaredFields();
-        Field[] fieldClass = cl.getDeclaredFields();
-        for (Field field : fieldSuperClass){
-            if (field.isAnnotationPresent(Attribute.class)){
-                field.setAccessible(true);
-                Attribute attr = field.getAnnotation(Attribute.class);
+
+        Class cl = obj.getClass(); //получаем ссылку на объект класса T
+        Class cl2 = cl.getSuperclass(); //тоже но для базового класса, это нужно чтобы получить доступ к аннотациям описанным в базовом классе
+
+        Field[] fieldSuperClass = cl2.getDeclaredFields(); //получаем все поля дочернего класса
+        Field[] fieldClass = cl.getDeclaredFields(); //тоже для базового
+
+        if (cl.isAnnotationPresent(ObjectType.class)) { //здесь мы проверяем на наличие аннотации ObjectType
+            ObjectType objectType = (ObjectType) cl.getAnnotation(ObjectType.class);
+            if (objectType.value() == 3) {
                 try {
-                    preparedStatement = connection.prepareStatement(QUERY_INSERT_VALUE);
-                    switch (attr.value()) {
+                    preparedStatement = connection.prepareStatement(QUERY_INSERT);
+                    preparedStatement.setInt(1, PAR_ID_DOG);
+                    preparedStatement.setInt(2, OBJ_TYPE_ID_DOG);
+                    preparedStatement.setString(3, "dog");
+                    preparedStatement.execute();
+                } catch (SQLException sql) {
+                    sql.printStackTrace();
+                }
+            } else if (objectType.value() == 2) {
+                try {
+                    preparedStatement = connection.prepareStatement(QUERY_INSERT);
+                    preparedStatement.setInt(1, PAR_ID_CAT);
+                    preparedStatement.setInt(2, OBJ_TYPE_ID_CAT);
+                    preparedStatement.setString(3, "cat");
+                    preparedStatement.execute();
+                } catch (SQLException sql) {
+                    sql.printStackTrace();
+                }
+            }
+        }
+
+        for (Field field : fieldSuperClass) { // для всех полей базового класса
+            if (field.isAnnotationPresent(Attribute.class)) { // есть ли указанная аннотация
+                field.setAccessible(true); // устанавливаем доступ к private полям
+                Attribute attr = field.getAnnotation(Attribute.class); // получаем аннотацию
+                try {
+                    preparedStatement = connection.prepareStatement(QUERY_INSERT_VALUE); //устанавливаем соединение
+                    switch (attr.value()) { // смотрим значение аннотации
                         case 1:
                             preparedStatement.setInt(1, 1);
-                            preparedStatement.setInt(2, (Integer) field.get(obj));
+                            preparedStatement.setInt(2, (Integer) field.get(obj)); // добавляем в БД значение поля
                             preparedStatement.execute();
                             break;
                         case 2:
@@ -105,16 +111,16 @@ public class DAO {
                             preparedStatement.execute();
                             break;
                     }
-                }catch (SQLException sql){
+                } catch (SQLException sql) {
                     sql.printStackTrace();
                 }
-                if (field.get(obj)!= null){
+                if (field.get(obj) != null) {
                     System.out.println(field.get(obj));
                 }
             }
         }
-        for (Field field1 : fieldClass){
-            if (field1.isAnnotationPresent(Attribute.class)){
+        for (Field field1 : fieldClass) { //здесь нет switch так как у класса cat только одно поле с аннотацией
+            if (field1.isAnnotationPresent(Attribute.class)) { //всё тоже самое но для дочернего класса
                 field1.setAccessible(true);
                 Attribute attr = field1.getAnnotation(Attribute.class);
                 try {
@@ -122,10 +128,10 @@ public class DAO {
                     preparedStatement.setInt(1, attr.value());
                     preparedStatement.setInt(2, 6);
                     preparedStatement.execute();
-                }catch (SQLException sql){
+                } catch (SQLException sql) {
                     sql.printStackTrace();
                 }
-                if (field1.get(obj) != null ){
+                if (field1.get(obj) != null) {
                     System.out.println(field1.get(obj));
                 }
             }
