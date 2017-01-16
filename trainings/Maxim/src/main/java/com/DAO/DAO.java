@@ -12,7 +12,6 @@ import java.util.*;
 public class DAO {
 
     private static long count = 10;
-
     /*
     * данные для подключения к базе
     */
@@ -25,7 +24,7 @@ public class DAO {
     * запросы
     */
 
-    private final static String QUERY_SELECT = "SELECT value, attr_id FROM  params  WHERE object_id = ?;"; //запрос
+    private final static String QUERY_SELECT = "SELECT value, attr_id FROM  params  WHERE object_id = ?;";
     private final static String QUERY_INSERT = "INSERT INTO objects (object_id, parent_id, object_type_id, name) VALUES (?, ?, ?, ?)";
     private final static String QUERY_INSERT_VALUE = "INSERT INTO params (attr_id, object_id, value) VALUES (?, ?, ?)";
     private final static String QUERY_DELETE_FROM_OBJECTS = "DELETE FROM objects WHERE object_id = ? ";
@@ -36,7 +35,7 @@ public class DAO {
     * соединения с БД, открытие и закрытие соединений
     */
 
-    private Connection connection;
+    private static Connection connection;
     private static PreparedStatement preparedStatement;
 
     /*
@@ -137,7 +136,7 @@ public class DAO {
                 sql.printStackTrace();
             }
         }
-        //TODO получить id объекта
+
         for (Field field : fieldClass) { // для всех полей класса
             if (field.isAnnotationPresent(Attribute.class)) { // есть ли указанная аннотация
                 field.setAccessible(true); // устанавливаем доступ к private полям
@@ -161,8 +160,10 @@ public class DAO {
                 if (field.get(obj) != null) {
                     System.out.println(field.get(obj));
                 }
+
             }
         }
+        count++;
     }
 
     // метод по извлечению объекта из БД

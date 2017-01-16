@@ -24,4 +24,11 @@ public class Dog extends Animal {
     public void playWithAnimal(){ // поиграть с животным
         System.out.println("You play with dog!");
     }
+
+    @Override
+    public String toString() {
+        return "Dog{" +
+                "kind='" + kind + '\'' +
+                "} " + super.toString();
+    }
 }
