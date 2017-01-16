@@ -19,7 +19,6 @@
             </plugin>
         </plugins>
     </build>
-
     <dependencies>
     <dependency>
         <groupId>postgresql</groupId>
@@ -27,5 +26,11 @@
         <version>9.1-901-1.jdbc4</version>
     </dependency>
 </dependencies>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.3.2.RELEASE</version>
+        </dependency>
+    </dependencies>
 </project>

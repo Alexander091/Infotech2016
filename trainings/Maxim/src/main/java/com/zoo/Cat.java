@@ -6,9 +6,15 @@ import com.zoo.Animal;
 
 @ObjectType(2)
 public class Cat extends Animal {
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "kind='" + kind + '\'' +
+                "} " + super.toString();
+    }
 
     @Attribute(6)
-    private final static String kind = "Cat"; //род кошки
+    private String kind = "Cat"; //род кошки
 
     @Override
     public void feed(){ //покормить кошку
@@ -18,5 +24,13 @@ public class Cat extends Animal {
     @Override
     public void playWithAnimal(){ // поиграть с кошкой
         System.out.println("You play with cat!");
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 }

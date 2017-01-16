@@ -2,9 +2,9 @@ package com.zooshop;
 
 import com.DAO.DAO;
 import com.zoo.Animal;
+import com.zoo.Cat;
 
 import java.sql.SQLException;
-import java.util.Iterator;
 
 public class ShopService  {
 
@@ -22,8 +22,16 @@ public class ShopService  {
         dao.save(obj);
     }
 
-    public void showAllAnimal(int id) throws SQLException {
-       System.out.println(dao.get(id));
+    public void showAllAnimal(long id) throws SQLException {
+        try {
+          Cat cat =  dao.getObject(Cat.class,id);
+            System.out.println(cat.toString());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void closeShop(){
