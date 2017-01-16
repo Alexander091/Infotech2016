@@ -13,7 +13,7 @@ import com.zoo.Animal;
 public class Dog extends Animal {
 
     @Attribute(6)
-    private final static String kind = "Wolf"; // род волки
+    private String kind = "Wolf"; // род волки
 
     @Override
     public void feed(){ //покормить животное

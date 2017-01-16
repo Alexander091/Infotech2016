@@ -9,9 +9,9 @@ public abstract class Animal extends Entity {
     */
 
     @Attribute(1)
-    private int weight; //вес
+    private double weight; //вес
     @Attribute(2)
-    private int length; //длина
+    private double length; //длина
     @Attribute(3)
     private int age;//возраст
     @Attribute(4)
@@ -23,19 +23,19 @@ public abstract class Animal extends Entity {
     * Сеттеры и геттеры
     */
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
-    public int getLength() {
+    public double getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(double length) {
         this.length = length;
     }
 

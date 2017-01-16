@@ -12,28 +12,54 @@ import java.util.*;
 
 public class DAO {
 
-    private final static int PAR_ID_CAT = 2;
-    private final static int PAR_ID_DOG = 3;
-    private final static int OBJ_TYPE_ID_CAT = 3;
-    private final static int OBJ_TYPE_ID_DOG = 4;
+    /*
+    * данные для подключения к базе
+    */
 
     private final static String URL = "jdbc:postgresql://localhost:5432/postgres";
     private final static String USERNAME = "postgres";
     private final static String PASSWORD = "123";
+
+    /*
+    * запросы
+    */
+
     private final static String QUERY_SELECT = "SELECT value, attr_id FROM  params  WHERE object_id = ?;"; //запрос
     private final static String QUERY_INSERT = "INSERT INTO objects (parent_id, object_type_id, name) VALUES (?, ?, ?)";
     private final static String QUERY_INSERT_VALUE = "INSERT INTO params (attr_id, value) VALUES (?, ?)";
     private final static String QUERY_DELETE = "DELETE FROM objects WHERE object_id = ? ";
 
+    /*
+    * то что касается непосредственного
+    * соединения с БД, открытие и закрытие соединений
+    */
+
     private Connection connection;
     private PreparedStatement preparedStatement;
 
-    public DAO() { // конструктор с установкой соединение с БД
+    /*
+    *  следующие 3 записи позволяют создать
+    *  одно соединение т работать только с
+    *  одним подключением к БД +
+    *  закрытый консткруктор не позволит создвать
+    *  объекты этого класса
+    */
+
+    private static final DAO DAOINSTANCE = new DAO();
+
+    private DAO() { // конструктор с установкой соединение с БД
+
         try{
             connection = DriverManager.getConnection(URL,USERNAME,PASSWORD); // устанавливаем соединение
         }catch (SQLException s){ // ловим ошибку
             s.printStackTrace();
         }
+    }
+
+    public static DAO getDaoInstance(){
+
+        return DAOINSTANCE;
+
     }
 
     public void closeConnection() { //закрываем соединение
@@ -43,6 +69,22 @@ public class DAO {
         }catch (SQLException s){
             s.printStackTrace();
         }
+    }
+
+    /*
+    * методы по работе с сущностями
+    */
+
+    // метод, который возвращает все поля помеченные аннотациями
+    // для дочернего и базового классов
+
+    private static List<Field> getInheritedFields(Class<?> type) { //получить поля класса
+
+        List<Field> fields = new ArrayList<Field>(); //добавляем поля в массив
+        for (Class<?> c = type; c != null; c = c.getSuperclass()) {
+            fields.addAll(Arrays.asList(c.getDeclaredFields())); //добавляем все задекларированные поля в массив
+        }
+        return fields;
     }
 
     public <T extends Entity> void save(T obj) throws IllegalAccessException {
@@ -66,7 +108,6 @@ public class DAO {
             }
         }
 //TODO получить id объекта
-
 
         for (Field field : fieldClass) { // для всех полей базового класса
             if (field.isAnnotationPresent(Attribute.class)) { // есть ли указанная аннотация
@@ -114,14 +155,6 @@ public class DAO {
             s.printStackTrace();
         }
     }
-    private static List<Field> getInheritedFields(Class<?> type) { //получить поля класса
-        List<Field> fields = new ArrayList<Field>(); //добавляем поля в массив
-        for (Class<?> c = type; c != null; c = c.getSuperclass()) {
-            fields.addAll(Arrays.asList(c.getDeclaredFields())); //добавляем все задекларированные поля в массив
-        }
-        return fields;
-    }
-
 
     public  <T extends Entity> T getObject(Class<T> cl, long id) throws IllegalAccessException, InstantiationException, SQLException {
         //значение объекта
