@@ -11,6 +11,16 @@ public class Entity {
     private long objectTypeId;
     private String name;
 
+    /*
+    * Список параметров сущности
+    * котроые указаны в таблице
+    * params
+    */
+
+    private long attrId;
+    //objectId уже указан, он есть в таблице objects
+    private String value;
+
     /* Сеттеры и геттеры
     *  для наших параметров
     */
@@ -45,6 +55,22 @@ public class Entity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getAttrId() {
+        return attrId;
+    }
+
+    public void setAttrId(long attrId) {
+        this.attrId = attrId;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     /*
