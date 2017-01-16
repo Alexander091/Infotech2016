@@ -4,6 +4,11 @@ import com.annotation.Attribute;
 import com.annotation.ObjectType;
 import com.zoo.Animal;
 
+/*
+* все комментарии для Cat
+* справедливы и для этого класса
+*/
+
 @ObjectType(3)
 public class Dog extends Animal {
 
