@@ -6,7 +6,7 @@ public class Entity {
     *  которые указаны в таблице
     *  objects
     */
-    private int objectId;
+    private long objectId = 0;
     private long parentId;
     private long objectTypeId;
     private String name;
@@ -25,11 +25,11 @@ public class Entity {
     *  для наших параметров
     */
 
-    public int getObjectId() {
+    public long getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(int objectId) {
+    public void setObjectId(long objectId) {
         this.objectId = objectId;
     }
 

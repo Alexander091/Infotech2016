@@ -8,23 +8,17 @@ import java.sql.SQLException;
 
 public class ShopService  {
 
-    private DAO dao;
-
-    public ShopService() {
-        dao = new DAO();
-    }
-
     public void buyAnimal(int objId){
-        dao.delete(objId);
+        DAO.getDaoInstance().deleteEntityFromDatabase(objId);
     }
 
     public <T extends Animal> void sellAnimal(T obj) throws IllegalAccessException {
-        dao.save(obj);
+        DAO.getDaoInstance().saveEntityInDatabase(obj);
     }
 
-    public void showAllAnimal(long id) throws SQLException {
+    /*public void showAllAnimal(long id) throws SQLException {
         try {
-          Cat cat =  dao.getObject(Cat.class,id);
+          Cat cat =  DAO.getDaoInstance().getParamsByObjectId(id);
             System.out.println(cat.toString());
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -32,10 +26,10 @@ public class ShopService  {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     public void closeShop(){
-        dao.closeConnection();
+        DAO.getDaoInstance().closeConnection();
     }
 
 }

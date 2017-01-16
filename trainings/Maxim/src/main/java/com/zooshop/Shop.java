@@ -56,10 +56,10 @@ public class Shop {
                     cat.setName(name.next());
                     System.out.println("Enter weight");
                     Scanner weight = new Scanner(System.in);
-                    cat.setWeight(weight.nextInt());
+                    cat.setWeight(weight.nextDouble());
                     System.out.println("Enter length");
                     Scanner length = new Scanner(System.in);
-                    cat.setLength(length.nextInt());
+                    cat.setLength(length.nextDouble());
                     System.out.println("Enter age");
                     Scanner age = new Scanner(System.in);
                     cat.setAge(age.nextInt());
@@ -90,7 +90,7 @@ public class Shop {
                 case "9":
                     System.out.println("Enter id");
                     Scanner id = new Scanner(System.in);
-                    sh.showAllAnimal(id.nextInt());
+                    //sh.showAllAnimal(id.nextInt());
                     break;
             }
             if(!string.equals(end)){

@@ -2,8 +2,6 @@ package com.DAO;
 
 import com.annotation.Attribute;
 import com.annotation.ObjectType;
-import com.zoo.Cat;
-import com.zoo.Dog;
 import com.zoo.Entity;
 
 import java.lang.reflect.Field;
@@ -11,6 +9,8 @@ import java.sql.*;
 import java.util.*;
 
 public class DAO {
+
+    private static long count = 10;
 
     /*
     * данные для подключения к базе
@@ -25,9 +25,10 @@ public class DAO {
     */
 
     private final static String QUERY_SELECT = "SELECT value, attr_id FROM  params  WHERE object_id = ?;"; //запрос
-    private final static String QUERY_INSERT = "INSERT INTO objects (parent_id, object_type_id, name) VALUES (?, ?, ?)";
-    private final static String QUERY_INSERT_VALUE = "INSERT INTO params (attr_id, value) VALUES (?, ?)";
-    private final static String QUERY_DELETE = "DELETE FROM objects WHERE object_id = ? ";
+    private final static String QUERY_INSERT = "INSERT INTO objects (object_id, parent_id, object_type_id, name) VALUES (?, ?, ?, ?)";
+    private final static String QUERY_INSERT_VALUE = "INSERT INTO params (attr_id, object_id, value) VALUES (?, ?, ?)";
+    private final static String QUERY_DELETE_FROM_OBJECTS = "DELETE FROM objects WHERE object_id = ? ";
+    private final static String QUERY_DELETE_FROM_PARAMS = "DELETE FROM params WHERE object_id = ? ";
 
     /*
     * то что касается непосредственного
@@ -35,17 +36,17 @@ public class DAO {
     */
 
     private Connection connection;
-    private PreparedStatement preparedStatement;
+    private static PreparedStatement preparedStatement;
 
     /*
     *  следующие 3 записи позволяют создать
-    *  одно соединение т работать только с
+    *  одно соединение и работать только с
     *  одним подключением к БД +
     *  закрытый консткруктор не позволит создвать
     *  объекты этого класса
     */
 
-    private static final DAO DAOINSTANCE = new DAO();
+    private static final DAO DAO_INSTANCE = new DAO();
 
     private DAO() { // конструктор с установкой соединение с БД
 
@@ -58,7 +59,7 @@ public class DAO {
 
     public static DAO getDaoInstance(){
 
-        return DAOINSTANCE;
+        return DAO_INSTANCE;
 
     }
 
@@ -75,8 +76,9 @@ public class DAO {
     * методы по работе с сущностями
     */
 
-    // метод, который возвращает все поля помеченные аннотациями
-    // для дочернего и базового классов
+    /* метод, который возвращает все поля помеченные аннотациями
+    * для дочернего и базового классов
+    */
 
     private static List<Field> getInheritedFields(Class<?> type) { //получить поля класса
 
@@ -87,39 +89,69 @@ public class DAO {
         return fields;
     }
 
-    public <T extends Entity> void save(T obj) throws IllegalAccessException {
+    /*
+    * метод добавляющией сущность в БД
+    * в таблицы objects и params
+    */
+
+    public <T extends Entity> void saveEntityInDatabase(T obj) throws IllegalAccessException {
 
         Class cl = obj.getClass(); //получаем ссылку на объект класса T
-        Class cl2 = cl.getSuperclass(); //тоже но для базового класса, это нужно чтобы получить доступ к аннотациям описанным в базовом классе
-
-
-        List<Field> fieldClass = getInheritedFields(obj.getClass());
+        List<Field> fieldClass = getInheritedFields(obj.getClass()); // получаем все поля класса
 
         if (cl.isAnnotationPresent(ObjectType.class)) { //здесь мы проверяем на наличие аннотации ObjectType
             ObjectType objectType = (ObjectType) cl.getAnnotation(ObjectType.class);
             try {
+
                 preparedStatement = connection.prepareStatement(QUERY_INSERT);
-                preparedStatement.setLong(1, obj.getParentId());
-                preparedStatement.setLong(2, objectType.value());
-                preparedStatement.setString(3, obj.getName());
-                preparedStatement.execute();
+                ///////////////////////////////////////////////////////////////////////////////
+                obj.setObjectId(count); // устанавливаем id
+                preparedStatement.setLong(1, obj.getObjectId()); // добавляем в таблицу
+                ///////////////////////////////////////////////////////////////////////////////
+                if (objectType.value() == 3 || objectType.value() == 2) { // если тип объекта 2 или 3 устанавливаем parentId 2
+
+                    obj.setParentId(2);
+
+                }
+                preparedStatement.setLong(2, obj.getParentId()); // добавляем в таблицу
+                ///////////////////////////////////////////////////////////////////////////////
+                obj.setObjectTypeId(objectType.value()); // те же действия с объектным типом
+                preparedStatement.setLong(3, obj.getObjectTypeId());
+                ///////////////////////////////////////////////////////////////////////////////
+                if (objectType.value() == 3) {
+
+                    obj.setName("dog");
+
+                }
+                else if (objectType.value() == 2){
+
+                    obj.setName("cat");
+
+                }
+                preparedStatement.setString(4, obj.getName());
+                ///////////////////////////////////////////////////////////////////////////////
+                preparedStatement.execute(); //выполняем запрос
+                ///////////////////////////////////////////////////////////////////////////////
             } catch (SQLException sql) {
                 sql.printStackTrace();
             }
         }
-//TODO получить id объекта
-
-        for (Field field : fieldClass) { // для всех полей базового класса
+        //TODO получить id объекта
+        for (Field field : fieldClass) { // для всех полей класса
             if (field.isAnnotationPresent(Attribute.class)) { // есть ли указанная аннотация
                 field.setAccessible(true); // устанавливаем доступ к private полям
                 Attribute attr = field.getAnnotation(Attribute.class); // получаем аннотацию
                 try {
+
                     Object objectValue = field.get(obj);
                     if(objectValue == null) continue;
-                    preparedStatement = connection.prepareStatement(QUERY_INSERT_VALUE); //устанавливаем соединение
-                    preparedStatement.setLong(1, attr.value());
 
-                    preparedStatement.setString(2,  field.get(obj).toString()); // добавляем в БД значение поля
+                    preparedStatement = connection.prepareStatement(QUERY_INSERT_VALUE); //устанавливаем соединение
+
+                    preparedStatement.setLong(1, attr.value()); // устанавливаем attrId
+                    preparedStatement.setLong(2, count); // устанавливаем objectId
+                    preparedStatement.setString(3,  field.get(obj).toString()); // добавляем в БД значение поля
+
                     preparedStatement.execute();
 
                 } catch (SQLException sql) {
@@ -131,6 +163,8 @@ public class DAO {
             }
         }
     }
+
+    // метод по извлечению объекта из БД
 
     public Map<Long, String> getParamsByObjectId(long id) throws SQLException {
         Map<Long, String> objectValues = new HashMap<>();
@@ -146,17 +180,24 @@ public class DAO {
         return objectValues;
     }
 
-    public void delete(int objId){ //удаляем из таблицы
+    // метод по удалению сущности из таблицы
+
+    public void deleteEntityFromDatabase(long objectId){ //удаляем из таблицы
+
         try {
-            preparedStatement = connection.prepareStatement(QUERY_DELETE);
-            preparedStatement.setInt(1, objId);
+            preparedStatement = connection.prepareStatement(QUERY_DELETE_FROM_OBJECTS);
+            preparedStatement.setLong(1, objectId);
+            preparedStatement.execute();
+
+            preparedStatement = connection.prepareStatement(QUERY_DELETE_FROM_PARAMS);
+            preparedStatement.setLong(1, objectId);
             preparedStatement.execute();
         }catch (SQLException s) {
             s.printStackTrace();
         }
     }
 
-    public  <T extends Entity> T getObject(Class<T> cl, long id) throws IllegalAccessException, InstantiationException, SQLException {
+    /*public  <T extends Entity> T getObject(Class<T> cl, long id) throws IllegalAccessException, InstantiationException, SQLException {
         //значение объекта
         Map<Long, String> resultSetObjectValues = getParamsByObjectId(id);
 
@@ -182,6 +223,6 @@ public class DAO {
             }
         }
         return entityOfAnimal;
-    }
+    }*/
 
 }
