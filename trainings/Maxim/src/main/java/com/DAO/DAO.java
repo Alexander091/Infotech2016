@@ -2,6 +2,7 @@ package com.DAO;
 
 import com.annotation.Attribute;
 import com.annotation.ObjectType;
+import com.zoo.Animal;
 import com.zoo.Entity;
 
 import java.lang.reflect.Field;
@@ -166,18 +167,39 @@ public class DAO {
 
     // метод по извлечению объекта из БД
 
-    public Map<Long, String> getParamsByObjectId(long id) throws SQLException {
-        Map<Long, String> objectValues = new HashMap<>();
+    public <T extends Animal> Animal getParamsByObjectId(T obj, long objectId) throws SQLException {
+
         preparedStatement = connection.prepareStatement(QUERY_SELECT);
-        preparedStatement.setLong(1, id);
+        preparedStatement.setLong(1, objectId);
         ResultSet resultSet = preparedStatement.executeQuery();
+
         while (resultSet.next()){
+
             //int objectId = resultSet.getInt("object_id");
-            String value = resultSet.getString("value");
             Long attrId = resultSet.getLong("attr_id");
-            objectValues.put(attrId, value);
+
+            if (attrId == 1) {
+                Double weight = resultSet.getDouble("value");
+                obj.setWeight(weight);
+            }
+            else if (attrId == 2) {
+                Double length = resultSet.getDouble("value");
+                obj.setWeight(length);
+            }
+            else if(attrId == 3){
+                Integer age = resultSet.getInt("value");
+                obj.setAge(age);
+            }
+            else if(attrId == 4){
+                String name = resultSet.getString("value");
+                obj.setName(name);
+            }
+            else if(attrId == 5){
+                String colour = resultSet.getString("value");
+                obj.setColour(colour);
+            }
         }
-        return objectValues;
+        return obj;
     }
 
     // метод по удалению сущности из таблицы
@@ -196,33 +218,5 @@ public class DAO {
             s.printStackTrace();
         }
     }
-
-    /*public  <T extends Entity> T getObject(Class<T> cl, long id) throws IllegalAccessException, InstantiationException, SQLException {
-        //значение объекта
-        Map<Long, String> resultSetObjectValues = getParamsByObjectId(id);
-
-        ObjectType objectTypeAnnotation = cl.getAnnotation(ObjectType.class); // получаем ссылку на объект аннотации
-        Long objectTypeId = objectTypeAnnotation.value(); // получаем значение из поля value аннотации ObjectType
-        System.out.println(objectTypeId);
-        T entityOfAnimal = cl.newInstance(); // создаём новую сущность класса Т
-        entityOfAnimal.setName("Entity name"); // имя сущности
-
-        for(Field field  : getInheritedFields(cl))
-        {
-            if (field.isAnnotationPresent(Attribute.class))
-            {
-                field.setAccessible(true);
-                Attribute attrAnnotation = field.getAnnotation(Attribute.class);
-                Long attrId = attrAnnotation.value();
-                System.out.println(attrId);
-                for (Map.Entry<Long, String> entry : resultSetObjectValues.entrySet()) {
-                    if(entry.getKey().equals(attrId)){
-                        field.set(entityOfAnimal, entry.getValue());
-                    }
-                }
-            }
-        }
-        return entityOfAnimal;
-    }*/
 
 }

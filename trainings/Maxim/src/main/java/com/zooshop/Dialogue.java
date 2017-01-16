@@ -2,7 +2,17 @@ package com.zooshop;
 
 public class Dialogue {
 
-    public void sayWelcome(){
+    private static final Dialogue DIALOGUE = new Dialogue();
+
+    private Dialogue(){};
+
+    public static Dialogue getDialogue(){
+
+        return DIALOGUE;
+
+    }
+
+    public static void sayWelcome(){
         System.out.println("Hello!Nice to meet you in my 'Zoo Shop'! What do you want to do?");
         System.out.print("1.Play with cat ");
         System.out.println(" 2.Play with dog");
@@ -15,7 +25,8 @@ public class Dialogue {
         System.out.println("9.Show how animals have ZooShop?");
         System.out.println("If You don't want anything say 'Goodbye!'");
     }
-    public void sayAnythingElse(){
+
+    public static void sayAnythingElse(){
         System.out.print("\nAnything else?\n ");
         System.out.print("1.Play with cat ");
         System.out.println(" 2.Play with dog");
@@ -28,7 +39,8 @@ public class Dialogue {
         System.out.println("9.Show how animals have ZooShop?");
         System.out.println("If You don't want anything say 'Goodbye!'");
     }
-    public void sayGoodbye(){
+
+    public static void sayGoodbye(){
         System.out.println("Goodbye,Sir!");
     }
 }
