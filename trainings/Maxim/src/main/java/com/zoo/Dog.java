@@ -25,6 +25,14 @@ public class Dog extends Animal {
         System.out.println("You play with dog!");
     }
 
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
     @Override
     public String toString() {
         return "Dog{" +

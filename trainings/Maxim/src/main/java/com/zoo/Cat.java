@@ -31,6 +31,7 @@ public class Cat extends Animal {
     /*
     * геттеры и сеттеры
     */
+
     public String getKind() {
         return kind;
     }

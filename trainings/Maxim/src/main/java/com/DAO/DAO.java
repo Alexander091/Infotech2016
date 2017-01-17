@@ -11,7 +11,7 @@ import java.util.*;
 
 public class DAO {
 
-    private static long count = 10;
+    private static long count = 0;
     /*
     * данные для подключения к базе
     */
@@ -23,12 +23,11 @@ public class DAO {
     /*
     * запросы
     */
-
+    private final static String QUERY_SELECT_ID = "SELECT  MAX(object_id) as max  FROM objects;";
     private final static String QUERY_SELECT = "SELECT value, attr_id FROM  params  WHERE object_id = ?;";
     private final static String QUERY_INSERT = "INSERT INTO objects (object_id, parent_id, object_type_id, name) VALUES (?, ?, ?, ?)";
     private final static String QUERY_INSERT_VALUE = "INSERT INTO params (attr_id, object_id, value) VALUES (?, ?, ?)";
     private final static String QUERY_DELETE_FROM_OBJECTS = "DELETE FROM objects WHERE object_id = ? ";
-    private final static String QUERY_DELETE_FROM_PARAMS = "DELETE FROM params WHERE object_id = ? ";
 
     /*
     * то что касается непосредственного
@@ -36,6 +35,7 @@ public class DAO {
     */
 
     private static Connection connection;
+    private static Statement statement;
     private static PreparedStatement preparedStatement;
 
     /*
@@ -76,6 +76,16 @@ public class DAO {
     * методы по работе с сущностями
     */
 
+    public static long getCount() throws SQLException {
+
+        statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(QUERY_SELECT_ID);
+        while (resultSet.next()){
+            count = resultSet.getLong("max");
+        }
+        return count;
+    }
+
     /* метод, который возвращает все поля помеченные аннотациями
     * для дочернего и базового классов
     */
@@ -105,7 +115,7 @@ public class DAO {
 
                 preparedStatement = connection.prepareStatement(QUERY_INSERT);
                 ///////////////////////////////////////////////////////////////////////////////
-                obj.setObjectId(count); // устанавливаем id
+                obj.setObjectId(count + 1); // устанавливаем id
                 preparedStatement.setLong(1, obj.getObjectId()); // добавляем в таблицу
                 ///////////////////////////////////////////////////////////////////////////////
                 if (objectType.value() == 3 || objectType.value() == 2) { // если тип объекта 2 или 3 устанавливаем parentId 2
@@ -149,7 +159,7 @@ public class DAO {
                     preparedStatement = connection.prepareStatement(QUERY_INSERT_VALUE); //устанавливаем соединение
 
                     preparedStatement.setLong(1, attr.value()); // устанавливаем attrId
-                    preparedStatement.setLong(2, count); // устанавливаем objectId
+                    preparedStatement.setLong(2, obj.getObjectId()); // устанавливаем objectId
                     preparedStatement.setString(3,  field.get(obj).toString()); // добавляем в БД значение поля
 
                     preparedStatement.execute();
@@ -212,9 +222,6 @@ public class DAO {
             preparedStatement.setLong(1, objectId);
             preparedStatement.execute();
 
-            preparedStatement = connection.prepareStatement(QUERY_DELETE_FROM_PARAMS);
-            preparedStatement.setLong(1, objectId);
-            preparedStatement.execute();
         }catch (SQLException s) {
             s.printStackTrace();
         }
