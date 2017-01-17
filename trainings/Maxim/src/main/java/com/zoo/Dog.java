@@ -2,7 +2,6 @@ package com.zoo;
 
 import com.annotation.Attribute;
 import com.annotation.ObjectType;
-import com.zoo.Animal;
 
 /*
 * все комментарии для Cat
@@ -17,26 +16,16 @@ public class Dog extends Animal {
 
     @Override
     public void feed(){ //покормить животное
-        System.out.println("You feed dog!");
+        System.out.println("Собака покормлена");
     }
 
     @Override
     public void playWithAnimal(){ // поиграть с животным
-        System.out.println("You play with dog!");
-    }
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
+        System.out.println("Вы поиграли с собакой");
     }
 
     @Override
     public String toString() {
-        return "Dog{" +
-                "kind='" + kind + '\'' +
-                "} " + super.toString();
+        return "Род " + kind + " " + super.toString();
     }
 }

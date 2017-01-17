@@ -11,7 +11,8 @@ import java.util.*;
 
 public class DAO {
 
-    private static long count = 0;
+    private static long count; // счётчик
+
     /*
     * данные для подключения к базе
     */
@@ -35,7 +36,6 @@ public class DAO {
     */
 
     private static Connection connection;
-    private static Statement statement;
     private static PreparedStatement preparedStatement;
 
     /*
@@ -63,22 +63,24 @@ public class DAO {
 
     }
 
-    public void closeConnection() { //закрываем соединение
-        try{
+    public static void closeConnection() throws SQLException { //закрываем соединение
+
+        try {
             connection.close();
             preparedStatement.close();
-        }catch (SQLException s){
+
+        } catch (SQLException s) {
             s.printStackTrace();
         }
     }
 
     /*
-    * методы по работе с сущностями
+    * счётчик
     */
 
-    public static long getCount() throws SQLException {
+    private static long getCount() throws SQLException {
 
-        statement = connection.createStatement();
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(QUERY_SELECT_ID);
         while (resultSet.next()){
             count = resultSet.getLong("max");
@@ -92,7 +94,7 @@ public class DAO {
 
     private static List<Field> getInheritedFields(Class<?> type) { //получить поля класса
 
-        List<Field> fields = new ArrayList<Field>(); //добавляем поля в массив
+        List<Field> fields = new ArrayList<>(); //добавляем поля в массив
         for (Class<?> c = type; c != null; c = c.getSuperclass()) {
             fields.addAll(Arrays.asList(c.getDeclaredFields())); //добавляем все задекларированные поля в массив
         }
@@ -115,7 +117,7 @@ public class DAO {
 
                 preparedStatement = connection.prepareStatement(QUERY_INSERT);
                 ///////////////////////////////////////////////////////////////////////////////
-                obj.setObjectId(count + 1); // устанавливаем id
+                obj.setObjectId(DAO.getCount() + 1); // устанавливаем id //TODO место где устанавливается id
                 preparedStatement.setLong(1, obj.getObjectId()); // добавляем в таблицу
                 ///////////////////////////////////////////////////////////////////////////////
                 if (objectType.value() == 3 || objectType.value() == 2) { // если тип объекта 2 или 3 устанавливаем parentId 2
@@ -130,15 +132,15 @@ public class DAO {
                 ///////////////////////////////////////////////////////////////////////////////
                 if (objectType.value() == 3) {
 
-                    obj.setName("dog");
+                    obj.setNameType("dog");
 
                 }
                 else if (objectType.value() == 2){
 
-                    obj.setName("cat");
+                    obj.setNameType("cat");
 
                 }
-                preparedStatement.setString(4, obj.getName());
+                preparedStatement.setString(4, obj.getNameType());
                 ///////////////////////////////////////////////////////////////////////////////
                 preparedStatement.execute(); //выполняем запрос
                 ///////////////////////////////////////////////////////////////////////////////
@@ -173,7 +175,6 @@ public class DAO {
 
             }
         }
-        count++;
     }
 
     // метод по извлечению объекта из БД
@@ -186,7 +187,6 @@ public class DAO {
 
         while (resultSet.next()){
 
-            //int objectId = resultSet.getInt("object_id");
             Long attrId = resultSet.getLong("attr_id");
 
             if (attrId == 1) {
@@ -195,7 +195,7 @@ public class DAO {
             }
             else if (attrId == 2) {
                 Double length = resultSet.getDouble("value");
-                obj.setWeight(length);
+                obj.setLength(length);
             }
             else if(attrId == 3){
                 Integer age = resultSet.getInt("value");
@@ -208,6 +208,10 @@ public class DAO {
             else if(attrId == 5){
                 String colour = resultSet.getString("value");
                 obj.setColour(colour);
+            }
+            else if(attrId == 6){
+                String kind = resultSet.getString("value");
+                obj.setKind(kind);
             }
         }
         return obj;

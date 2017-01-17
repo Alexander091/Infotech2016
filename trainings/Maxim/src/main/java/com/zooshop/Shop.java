@@ -1,6 +1,5 @@
 package com.zooshop;
 
-import com.DAO.DAO;
 import com.zoo.Animal;
 import com.zoo.Cat;
 import com.zoo.Dog;
@@ -16,12 +15,13 @@ public class Shop {
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, IOException, SQLException {
 
         Animal cat = new Cat();
-        Animal dog = new Dog();                  //TODO Dependency Injecion
-        ShopService sh = new ShopService();     //TODO добавить инициализацию, в DAO и ShopService,
+        Animal dog = new Dog();                   //TODO Dependency Injecion
+        ShopService sh = new ShopService();      //TODO добавить инициализацию, в DAO и ShopService,
         String string;                          // TODO сделать спринговские бины
-        String end = "Goodbye";
+        String end = "exit";
 
-        Dialogue.sayWelcome();
+        Dialogue.getDialogue().sayWelcome();
+        Dialogue.getDialogue().sayService();
         do{
             BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
             string = buff.readLine();
@@ -40,63 +40,63 @@ public class Shop {
                     break;
                 case "5":
                     System.out.println("Какой id");
-                    Scanner idCat = new Scanner(System.in);
-                    sh.buyAnimal(idCat.nextInt());
+                    Scanner animalId = new Scanner(System.in);
+                    sh.buyAnimal(animalId.nextInt());
                     break;
                 case "6":
-                    System.out.println("Какой id");
-                    Scanner idDog = new Scanner(System.in);
-                    sh.buyAnimal(idDog.nextInt());
-                    break;
-                case "7":
                     System.out.println("Пожалуйста уточните характеристики");
-                    System.out.println("Введите name");
+                    System.out.println("Введите имя");
                     Scanner name = new Scanner(System.in);
                     cat.setName(name.next());
-                    System.out.println("Введите weight");
+                    System.out.println("Введите вес");
                     Scanner weight = new Scanner(System.in);
                     cat.setWeight(weight.nextDouble());
-                    System.out.println("Введите length");
+                    System.out.println("Введите длину");
                     Scanner length = new Scanner(System.in);
                     cat.setLength(length.nextDouble());
-                    System.out.println("Введите age");
+                    System.out.println("Введите возраст");
                     Scanner age = new Scanner(System.in);
                     cat.setAge(age.nextInt());
-                    System.out.println("Введите colour");
+                    System.out.println("Введите цвет");
                     Scanner colour = new Scanner(System.in);
                     cat.setColour(colour.next());
                     sh.sellAnimal(cat);
                     break;
-                case "8":
+                case "7":
                     System.out.println("Пожалуйста уточните характеристики");
-                    System.out.println("Введите name");
+                    System.out.println("Введите имя");
                     Scanner name1 = new Scanner(System.in);
                     dog.setName(name1.next());
-                    System.out.println("Введите weight");
+                    System.out.println("Введите вес");
                     Scanner weight1 = new Scanner(System.in);
                     dog.setWeight(weight1.nextInt());
-                    System.out.println("Введите length");
+                    System.out.println("Введите длину");
                     Scanner length1 = new Scanner(System.in);
                     dog.setLength(length1.nextInt());
-                    System.out.println("Введите age");
+                    System.out.println("Введите возраст");
                     Scanner age1 = new Scanner(System.in);
                     dog.setAge(age1.nextInt());
-                    System.out.println("Введите colour");
+                    System.out.println("Введите цвет");
                     Scanner colour1 = new Scanner(System.in);
                     dog.setColour(colour1.next());
                     sh.sellAnimal(dog);
                     break;
+                case "8":
+                    System.out.println("Введите id");
+                    Scanner idCat = new Scanner(System.in);
+                    sh.showAnimal(cat, idCat.nextInt());
+                    break;
                 case "9":
                     System.out.println("Введите id");
-                    Scanner id = new Scanner(System.in);
-                    sh.showAllAnimal(cat,id.nextInt());
+                    Scanner idDog = new Scanner(System.in);
+                    sh.showAnimal(dog, idDog.nextInt());
                     break;
             }
             if(!string.equals(end)){
-                Dialogue.sayAnythingElse();
+                Dialogue.getDialogue().sayAnythingElse();
             }
             if(string.equals(end)){
-                Dialogue.sayGoodbye();
+                Dialogue.getDialogue().sayExit();
                 try {
                     sh.closeShop();
                 } catch (Exception e) {

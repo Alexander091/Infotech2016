@@ -13,34 +13,34 @@ public class Dialogue {
     }
 
     public static void sayWelcome(){
-        System.out.println("Hello!Nice to meet you in my 'Zoo Shop'! What do you want to do?");
-        System.out.print("1.Play with cat ");
-        System.out.println(" 2.Play with dog");
-        System.out.print("3.Feed cat ");
-        System.out.println(" 4.Feed dog");
-        System.out.print("5.Buy cat ");
-        System.out.println(" 6.Buy dog");
-        System.out.print("7.Sell cat ");
-        System.out.println(" 8.Sell dog");
-        System.out.println("9.Show how animals have ZooShop?");
-        System.out.println("If You don't want anything say 'Goodbye!'");
+
+        System.out.println("Добро пожаловать в Зоомагазин! Что вам угодно?");
+
+    }
+
+    public static void sayService(){
+
+        System.out.print("1.Поиграть с кошкой");
+        System.out.println(" 2.Поиграть с собакой");
+        System.out.print("3.Покормить кошку ");
+        System.out.println("  4.Покормить собаку");
+        System.out.print("5.Купить животное ");
+        System.out.println("  6.Продать кошку ");
+        System.out.print("7.Продать собаку ");
+        System.out.println("   8.Посмотреть на кошку");
+        System.out.println("9.Посмотреть на собаку ");
+        System.out.println("Если хотите уйти, скажите exit");
+
     }
 
     public static void sayAnythingElse(){
-        System.out.print("\nAnything else?\n ");
-        System.out.print("1.Play with cat ");
-        System.out.println(" 2.Play with dog");
-        System.out.print("3.Feed cat ");
-        System.out.println(" 4.Feed dog");
-        System.out.print("5.Buy cat ");
-        System.out.println(" 6.Buy dog");
-        System.out.print("7.Sell cat ");
-        System.out.println(" 8.Sell dog");
-        System.out.println("9.Show how animals have ZooShop?");
-        System.out.println("If You don't want anything say 'Goodbye!'");
+
+        System.out.print("\nЧто-нибудь ещё?\n");
+        Dialogue.sayService();
+
     }
 
-    public static void sayGoodbye(){
-        System.out.println("Goodbye,Sir!");
+    public static void sayExit(){
+        System.out.println("Всего доброго!");
     }
 }

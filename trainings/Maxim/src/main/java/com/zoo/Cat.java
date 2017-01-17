@@ -20,30 +20,16 @@ public class Cat extends Animal {
 
     @Override
     public void feed(){ //покормить кошку
-        System.out.println("You feed cat!");
+        System.out.println("Кот покормлен");
     }
 
     @Override
     public void playWithAnimal(){ // поиграть с кошкой
-        System.out.println("You play with cat!");
-    }
-
-    /*
-    * геттеры и сеттеры
-    */
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
+        System.out.println("Вы поиграли с котом");
     }
 
     @Override
     public String toString() {
-        return "Cat{" +
-                "kind='" + kind + '\'' +
-                "} " + super.toString();
+        return "Род " + kind + " " + super.toString();
     }
 }

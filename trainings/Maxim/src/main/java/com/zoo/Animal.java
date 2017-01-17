@@ -18,10 +18,19 @@ public abstract class Animal extends Entity {
     private String name;//клички животных
     @Attribute(5)
     private String colour;//цвет
+    private String kind;//род
 
     /*
     * Сеттеры и геттеры
     */
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
 
     public double getWeight() {
         return weight;
@@ -47,12 +56,10 @@ public abstract class Animal extends Entity {
         this.age = age;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }

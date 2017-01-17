@@ -9,7 +9,7 @@ public class Entity {
     private long objectId = 0;
     private long parentId;
     private long objectTypeId;
-    private String name;
+    private String nameType;
 
     /*
     * Список параметров сущности
@@ -49,12 +49,12 @@ public class Entity {
         this.objectTypeId = objectTypeId;
     }
 
-    public String getName() {
-        return name;
+    public String getNameType() {
+        return nameType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameType(String nameType) {
+        this.nameType = nameType;
     }
 
     public long getAttrId() {
@@ -83,7 +83,7 @@ public class Entity {
                 "objectId=" + objectId +
                 ", parentId=" + parentId +
                 ", objectTypeId=" + objectTypeId +
-                ", name='" + name + '\'' +
+                ", name='" + nameType + '\'' +
                 '}';
     }
 

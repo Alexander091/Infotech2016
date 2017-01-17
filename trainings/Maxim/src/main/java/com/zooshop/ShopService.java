@@ -16,14 +16,14 @@ public class ShopService  {
         DAO.getDaoInstance().saveEntityInDatabase(obj);
     }
 
-    public <T extends Animal> Animal showAllAnimal(T animal, long id) throws SQLException {
+    public <T extends Animal> Animal showAnimal(T animal, long id) throws SQLException {
 
         DAO.getDaoInstance().getParamsByObjectId(animal, id);
-        System.out.println(animal.toString());
+        System.out.println(animal);
         return animal;
     }
 
-    public void closeShop(){
+    public void closeShop() throws SQLException {
         DAO.getDaoInstance().closeConnection();
     }
 
