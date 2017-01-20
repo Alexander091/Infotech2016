@@ -11,8 +11,8 @@ import java.io.InputStreamReader;
 public class Zoo {
 
     private final static int PAR_ID = 1;
-    private final static int OBJ_TYPE_ID_CAT = 2;
-    private final static int OBJ_TYPE_ID_DOG = 3;
+    private final static int OBJ_TYPE_ID_CAT = 1;
+    private final static int OBJ_TYPE_ID_DOG = 2;
     private DAO dao;
 
     public Zoo(){
@@ -28,18 +28,19 @@ public class Zoo {
         dao.saveAnimal(obj_id, PAR_ID, OBJ_TYPE_ID_DOG,name);
     }
 
-    protected void sellCat(String name) {
+    protected void sellAnimal(String name) {
         dao.deleteAnimal(name);
     }
 
-    protected void sellDog(String name) {
-        dao.deleteAnimal(name);
+    protected void sellAnimal(int object_id){
+        dao.deleteAnimal(object_id);
     }
 
     protected void printInfo() {
         dao.printAllObjects();
     }
-    public void closeShop(){
+
+    protected void closeShop(){
         dao.closeConnection();
     }
 

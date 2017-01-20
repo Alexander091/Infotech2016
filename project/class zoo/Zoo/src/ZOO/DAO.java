@@ -78,9 +78,19 @@ public class DAO {
         }
     }
 
+    protected void deleteAnimal(int object_id){
+        queryTest  = "DELETE FROM objects WHERE object_id = '"+object_id+"';";
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate(queryTest);
+        }catch (SQLException s) {
+            s.printStackTrace();
+        }
+    }
+
     protected void allCats(){
         try{
-        queryTest  = "SELECT * FROM objects WHERE object_id = '"+4+"';";
+        queryTest  = "SELECT * FROM objects WHERE object_type_id = 1" + ";";
         statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(queryTest);
         while (resultSet.next()){
@@ -98,7 +108,7 @@ public class DAO {
 
     protected void allDogs(){
         try{
-            queryTest  = "SELECT * FROM objects WHERE object_id = '"+5+"';";
+            queryTest  = "SELECT * FROM objects WHERE object_type_id = 2"+";";
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(queryTest);
             while (resultSet.next()){

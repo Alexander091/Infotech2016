@@ -9,6 +9,8 @@ public class Cat extends Animal {
         super(age,male,breed,name);
     }
 
+    public Cat(){};
+
     @Override
     protected void voice()
     {

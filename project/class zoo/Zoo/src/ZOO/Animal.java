@@ -22,6 +22,8 @@ public abstract class Animal {
         setName(name);
     }
 
+    public Animal(){};
+
     protected int getAge() {
         return age;
     }
