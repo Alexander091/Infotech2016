@@ -6,7 +6,7 @@ public class Entity {
     *  которые указаны в таблице
     *  objects
     */
-    private long objectId = 0;
+    private long objectId;
     private long parentId;
     private long objectTypeId;
     private String nameType;
