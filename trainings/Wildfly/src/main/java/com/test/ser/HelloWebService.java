@@ -1,6 +1,6 @@
 package com.test.ser;
 
-// это аннотации, т.е. способ отметить наши классы и методы,
+// отмечаем классы и методы,
 // как связанные с веб-сервисной технологией
 import javax.jws.WebMethod;
 import javax.jws.WebService;
