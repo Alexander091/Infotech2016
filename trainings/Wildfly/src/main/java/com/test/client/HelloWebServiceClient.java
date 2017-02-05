@@ -30,7 +30,7 @@ public class HelloWebServiceClient {
         // получить ссылку на удаленный от нас объект веб-сервиса
         HelloWebService hello = service.getPort(HelloWebService.class);
 
-        // Ура! Теперь можно вызывать удаленный метод
+        //Теперь можно вызывать удаленный метод
         System.out.println(hello.getHelloString("world"));
     }
 }
