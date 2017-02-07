@@ -2,23 +2,13 @@ package com.zooshop;
 
 public class Dialogue {
 
-    private static final Dialogue DIALOGUE = new Dialogue();
-
-    private Dialogue(){};
-
-    public static Dialogue getDialogue(){
-
-        return DIALOGUE;
-
-    }
-
-    public static void sayWelcome(){
+    void sayWelcome(){
 
         System.out.println("Добро пожаловать в Зоомагазин! Что вам угодно?");
 
     }
 
-    public static void sayService(){
+    void sayService(){
 
         System.out.print("1.Поиграть с кошкой");
         System.out.println(" 2.Поиграть с собакой");
@@ -33,14 +23,14 @@ public class Dialogue {
 
     }
 
-    public static void sayAnythingElse(){
+    void sayAnythingElse(){
 
         System.out.print("\nЧто-нибудь ещё?\n");
-        Dialogue.sayService();
+        sayService();
 
     }
 
-    public static void sayExit(){
+    void sayExit(){
         System.out.println("Всего доброго!");
     }
 }

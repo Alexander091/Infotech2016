@@ -48,7 +48,7 @@ public class DAO {
 
     private static final DAO DAO_INSTANCE = new DAO();
 
-    private DAO() { // конструктор с установкой соединение с БД
+    public DAO() { // конструктор с установкой соединение с БД
 
         try{
             connection = DriverManager.getConnection(URL,USERNAME,PASSWORD); // устанавливаем соединение
@@ -63,7 +63,7 @@ public class DAO {
 
     }
 
-    public static void closeConnection() throws SQLException { //закрываем соединение
+    public void closeConnection() throws SQLException { //закрываем соединение
 
         try {
             connection.close();

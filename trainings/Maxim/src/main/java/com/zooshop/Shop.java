@@ -1,8 +1,11 @@
 package com.zooshop;
 
-import com.zoo.Animal;
+import com.config.ShopConfig;
 import com.zoo.Cat;
 import com.zoo.Dog;
+import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,16 +15,30 @@ import java.util.Scanner;
 
 public class Shop {
 
+    private static Logger LOG = Logger.getLogger(Shop.class); /*подключил логирование*/
+    /**
+     * создал контекст для IoC
+     */
+    public static ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ShopConfig.class);
+
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, IOException, SQLException {
 
-        Animal cat = new Cat();
-        Animal dog = new Dog();                   //TODO Dependency Injecion
-        ShopService sh = new ShopService();      //TODO добавить инициализацию, в DAO и ShopService,
-        String string;                          // TODO сделать спринговские бины
+        LOG.info("Приложение работает.....");
+        /*
+          получил бины из контейнера
+         */
+        Cat cat = applicationContext.getBean(Cat.class);
+        Dog dog = applicationContext.getBean(Dog.class);
+        ShopService sh = applicationContext.getBean(ShopService.class);
+
+        String string;
         String end = "exit";
 
-        Dialogue.getDialogue().sayWelcome();
-        Dialogue.getDialogue().sayService();
+        applicationContext.getBean(Dialogue.class).sayWelcome();
+        applicationContext.getBean(Dialogue.class).sayService();
+
+        LOG.info("Начало цикла взаимодействия с пользователем");
+
         do{
             BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
             string = buff.readLine();
@@ -93,17 +110,20 @@ public class Shop {
                     break;
             }
             if(!string.equals(end)){
-                Dialogue.getDialogue().sayAnythingElse();
+                applicationContext.getBean(Dialogue.class).sayAnythingElse();
             }
             if(string.equals(end)){
-                Dialogue.getDialogue().sayExit();
+                applicationContext.getBean(Dialogue.class).sayExit();
                 try {
+                    LOG.info("Возможен exception, если магазин не был открыт");
                     sh.closeShop();
                 } catch (Exception e) {
+                    LOG.info("Магазин не был открыт");
                     System.out.println("Магазин ещё работает");
                 }
             }
         }while(!string.equals(end));
 
+        LOG.info("Приложение завершило работу....");
     }
 }
