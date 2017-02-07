@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Import;
 public class ShopConfig {
 
     @Bean
-    ShopService getService(){
+    static ShopService getService(){
         return new ShopService();
     }
 
     @Bean
-    Dialogue getDialogue(){
+    static Dialogue getDialogue(){
         return new Dialogue();
     }
 

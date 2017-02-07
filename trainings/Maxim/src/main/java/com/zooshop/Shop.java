@@ -1,6 +1,7 @@
 package com.zooshop;
 
 import com.config.ShopConfig;
+import com.zoo.Animal;
 import com.zoo.Cat;
 import com.zoo.Dog;
 import org.apache.log4j.Logger;
@@ -27,8 +28,8 @@ public class Shop {
         /*
           получил бины из контейнера
          */
-        Cat cat = applicationContext.getBean(Cat.class);
-        Dog dog = applicationContext.getBean(Dog.class);
+        Animal cat = applicationContext.getBean(Cat.class);
+        Animal dog = applicationContext.getBean(Dog.class);
         ShopService sh = applicationContext.getBean(ShopService.class);
 
         String string;

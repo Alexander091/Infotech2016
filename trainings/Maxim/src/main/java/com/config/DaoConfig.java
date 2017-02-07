@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 public class DaoConfig {
 
     @Bean
-    DAO getDAO(){
+    static DAO getDAO(){
         return new DAO();
     }
 }

@@ -13,13 +13,13 @@ public class ZooConfig {
 
     @Bean
     @Scope("prototype")
-    Cat getCat(){
+    static Cat getCat(){
         return new Cat();
     }
 
     @Bean
     @Scope("prototype")
-    Dog getDog(){
+    static Dog getDog(){
         return new Dog();
     }
 }
