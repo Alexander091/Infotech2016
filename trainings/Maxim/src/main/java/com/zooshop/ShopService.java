@@ -1,7 +1,6 @@
 package com.zooshop;
 
 import com.DAO.DAO;
-import com.config.ShopConfig;
 import com.zoo.Animal;
 
 import java.sql.SQLException;

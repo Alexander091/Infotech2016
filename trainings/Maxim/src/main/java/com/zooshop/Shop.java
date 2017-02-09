@@ -20,7 +20,7 @@ public class Shop {
     /**
      * создал контекст для IoC
      */
-    public static ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ShopConfig.class);
+    private static ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ShopConfig.class);
 
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, IOException, SQLException {
 
