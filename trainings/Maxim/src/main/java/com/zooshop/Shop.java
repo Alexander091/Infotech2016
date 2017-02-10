@@ -1,6 +1,6 @@
 package com.zooshop;
 
-import com.config.ShopConfig;
+import com.config.ConfigBeans;
 import com.zoo.Animal;
 import com.zoo.Cat;
 import com.zoo.Dog;
@@ -20,7 +20,7 @@ public class Shop {
     /**
      * создал контекст для IoC
      */
-    private static ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ShopConfig.class);
+    private static ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ConfigBeans.class);
 
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, IOException, SQLException {
 

@@ -2,7 +2,7 @@ package com.zoo;
 
 import com.annotation.Attribute;
 
-public abstract class Animal extends Entity {
+public class Animal extends Entity {
 
     /*
     * Список параметров животных

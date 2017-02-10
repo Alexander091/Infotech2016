@@ -29,12 +29,14 @@ public class DAO {
     private final static String QUERY_INSERT = "INSERT INTO objects (object_id, parent_id, object_type_id, name) VALUES (?, ?, ?, ?)";
     private final static String QUERY_INSERT_VALUE = "INSERT INTO params (attr_id, object_id, value) VALUES (?, ?, ?)";
     private final static String QUERY_DELETE_FROM_OBJECTS = "DELETE FROM objects WHERE object_id = ? ";
+    private final static String QUERY_ALL_PARAMS = "SELECT * FROM params";
 
     /*
     * то что касается непосредственного
     * соединения с БД, открытие и закрытие соединений
     */
 
+    private static Statement statement;
     private static Connection connection;
     private static PreparedStatement preparedStatement;
 
@@ -229,6 +231,26 @@ public class DAO {
         }catch (SQLException s) {
             s.printStackTrace();
         }
+    }
+
+    public List<Entity> getListParams() throws SQLException {
+
+        List<Entity> list = new ArrayList<>();
+        try {
+            statement = connection.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ResultSet resultSet = statement.executeQuery(QUERY_ALL_PARAMS);
+        while (resultSet.next())
+        {
+            Entity entity = new Entity();
+            entity.setAttrId(resultSet.getInt("attr_id"));
+            entity.setObjectId(resultSet.getInt("object_id"));
+            entity.setValue(resultSet.getString("value"));
+            list.add(entity);
+        }
+        return list;
     }
 
 }
