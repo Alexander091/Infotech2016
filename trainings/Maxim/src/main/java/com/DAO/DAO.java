@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 
+@SuppressWarnings("SqlDialectInspection")
 public class DAO {
 
     private static long count; // счётчик
@@ -24,6 +25,7 @@ public class DAO {
     /*
     * запросы
     */
+
     private final static String QUERY_SELECT_ID = "SELECT  MAX(object_id) as max  FROM objects;";
     private final static String QUERY_SELECT = "SELECT value, attr_id FROM  params  WHERE object_id = ?;";
     private final static String QUERY_INSERT = "INSERT INTO objects (object_id, parent_id, object_type_id, name) VALUES (?, ?, ?, ?)";
@@ -116,7 +118,6 @@ public class DAO {
         if (cl.isAnnotationPresent(ObjectType.class)) { //здесь мы проверяем на наличие аннотации ObjectType
             ObjectType objectType = (ObjectType) cl.getAnnotation(ObjectType.class);
             try {
-
                 preparedStatement = connection.prepareStatement(QUERY_INSERT);
                 ///////////////////////////////////////////////////////////////////////////////
                 obj.setObjectId(DAO.getCount() + 1); // устанавливаем id //TODO место где устанавливается id
@@ -249,6 +250,29 @@ public class DAO {
             entity.setObjectId(resultSet.getInt("object_id"));
             entity.setValue(resultSet.getString("value"));
             list.add(entity);
+        }
+        return list;
+    }
+
+    private final static String QUERY = "SELECT object_id, name FROM objects";
+
+    public List<Entity> getListObjects(){
+     List<Entity> list = new ArrayList<>();
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            System.out.println("Соединение не установалено");
+        }
+        try {
+            ResultSet resultSet = statement.executeQuery(QUERY);
+            while (resultSet.next()){
+                Entity entity = new Entity();
+                entity.setObjectId(resultSet.getInt("object_id"));
+                entity.setNameType(resultSet.getString("name"));
+                list.add(entity);
+            }
+        } catch (SQLException e) {
+            System.out.println("Запрос не выполнен");
         }
         return list;
     }
